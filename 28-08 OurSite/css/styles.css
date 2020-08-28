@@ -11,14 +11,14 @@ nav {
 
 nav div {
     color: white;
-    background-color: #950740;
+    background-color: #1b8229;
     padding: 10px;
     margin: 0px 10px 0px 10px;
     border-radius: 8px;
 }
 
 .navButton:hover{
-    background-color: #6f2232;
+    background-color: #1b6229;
 }
 
 nav a {
@@ -51,15 +51,11 @@ body {
     margin: 0px 15px 0px 15px;
 }
 
-.footer {
+footer {
     background-color: #1a1a1d;
     text-align: center;
     color: white;
     padding: 15px;
-}
-
-.footerImg img{
-    height: 30px;
 }
 
 @media (max-width: 700px) {
