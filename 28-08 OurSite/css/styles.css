@@ -1,0 +1,88 @@
+html {
+    font-family: 'Roboto', sans-serif;
+}
+
+nav {
+    display: flex;
+    background-color: #1a1a1d;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+nav div {
+    color: white;
+    background-color: #950740;
+    padding: 10px;
+    margin: 0px 10px 0px 10px;
+    border-radius: 8px;
+}
+
+.navButton:hover{
+    background-color: #6f2232;
+}
+
+nav a {
+    text-decoration: none;
+}
+
+.logo {
+    background: transparent;
+    flex-grow: 1;
+}
+
+.logo img {
+    height: 50px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0px;
+}
+
+.body {
+    display: flex;
+    justify-content: space-evenly;
+    flex-grow: 1;
+}
+
+.body div {
+    margin: 0px 15px 0px 15px;
+}
+
+.footer {
+    background-color: #1a1a1d;
+    text-align: center;
+    color: white;
+    padding: 15px;
+}
+
+.footerImg img{
+    height: 30px;
+}
+
+@media (max-width: 700px) {
+    .body{
+        flex-direction: column;
+    }
+}
+
+.claro body {
+    background-color: white;
+}
+
+.oscuro body {
+    background-color: #2b2b30;
+    color: white;
+}
+
+.selector {
+    margin: 10px;
+    text-align: right;
+    cursor: pointer;
+}
+
+.selectorClaroOscuro {
+    text-decoration-line: underline;
+}
