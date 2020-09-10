@@ -37,7 +37,7 @@ function get_element_li (name, price) {
         price = "<span class='invalid-price'>" + price + " (not counted)</span>";
     }
 
-    template.innerHTML = "<div class='item-details'>name: <strong>" + name + "</strong> price: " + price + "</div>  <button class=\"remove-item\">remove</button>";
+    template.innerHTML = "<div class='list-item'><div class='item-details'>name: <strong>" + name + "</strong> price: " + price + "</div>  <button class=\"remove-item\">remove</button></div>";
 
     return template;
 }
@@ -50,6 +50,9 @@ let add_item_to_list_with_template = () => {
 
         document.querySelector('#item-name').value = "";
         document.querySelector('#item-value').value = "";
+
+        document.querySelector('#item-name').focus();
+        document.querySelector('#item-name').select();
 
         // If any of the fields is empty, don't add it.
         if (name === "" || price === "") {
