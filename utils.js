@@ -6,9 +6,25 @@ or we could use ChildNode.remove()
 https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove
 */
 
+let total_price = 0.00;
+
+function update_total() {
+    document.querySelector('#total').innerHTML = "$ " + total_price.toFixed(2);
+}
+
 let remove_item = (element_to_delete) => {
+    let str = element_to_delete.innerHTML;
+    let index = str.indexOf("price: ");
+    let price = parseFloat(str.substring(index + 7));
+
+    if (price == NaN) {
+        return;
+    }
+
+    total_price -= price;
+    update_total();
+
     element_to_delete.remove();
-    
 }
 
 function get_element_li (name, price) {
@@ -28,10 +44,19 @@ let add_item_to_list_with_template = () => {
         add the value to the total
         */
         
-        let name = document.querySelector('#item-name').value;
-        let price = document.querySelector('#item-value').value;
+        let name = document.querySelector('#item-name').value.trim();
+        let price = document.querySelector('#item-value').value.trim();
+
+        document.querySelector('#item-name').value = "";
+        document.querySelector('#item-value').value = "";
+
+        if (name === "" || price === "" || parseFloat(price < 0)) {
+            return;
+        }
 
         document.querySelector('#items-list').appendChild(get_element_li(name, price));
+        total_price += parseFloat(price.trim());
+        update_total();
 
         let new_item = document.querySelector('#items-list').lastElementChild;
         new_item.querySelector('.remove-item').addEventListener('click', (event) => remove_item(new_item));

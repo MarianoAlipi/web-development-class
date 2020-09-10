@@ -9,10 +9,8 @@
         // DOMContentLoaded wait until all dom is loaded, check the docs in below link
         // https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event
         document.addEventListener("DOMContentLoaded", (_) => {
-            let item_name = document.querySelector("#item-name");
-            let item_value = document.querySelector("#item-value");
-            // use here what you have in utils.js
 
+            update_total();
             document.querySelector('#add-item').addEventListener('click', add_item_to_list_with_template());
 
         });
@@ -31,7 +29,8 @@
         
     </ul>
 
-    <div id="total"></div>
+    <strong>Total</strong>:
+    <div id="total">$</div>
     
 </body>
 </html>
