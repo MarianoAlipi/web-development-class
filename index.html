@@ -54,7 +54,16 @@
         document.addEventListener("DOMContentLoaded", (_) => {
 
             update_total();
+            
+            // The add button behavior.
             document.querySelector('#add-item').addEventListener('click', add_item_to_list_with_template());
+
+            // Make the enter key press the add button.
+            document.querySelector("#item-value").addEventListener("keypress", (event) => {
+                if (event.keyCode === 13) {
+                    document.querySelector("#add-item").click();
+                }
+            });
 
         });
     </script>
