@@ -50,7 +50,10 @@ let add_item_to_list_with_template = () => {
         document.querySelector('#item-name').value = "";
         document.querySelector('#item-value').value = "";
 
-        if (name === "" || price === "" || parseFloat(price < 0)) {
+        console.log(price);
+        console.log(price < 0);
+
+        if (name === "" || price === "" || price < 0) {
             return;
         }
 
