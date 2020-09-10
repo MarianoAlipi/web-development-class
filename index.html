@@ -3,7 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>lab items list</title>
+    <title>Shopping list</title>
+    <style>
+
+        body {
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+        #items-list {
+            width: 70%;
+        }
+
+        .added-item {
+            padding: 1px;
+            display: flex;
+            flex-flow: row;
+            flex-direction: row;
+        }
+
+        .item-details {
+            width: 70%;
+        }
+
+        .invalid-item {
+            border: 2px solid red;
+        }
+
+        .invalid-price {
+            color: red;
+            font-style: italic;
+        }
+
+    </style>
     <script src="./utils.js"></script>
     <script>
         // DOMContentLoaded wait until all dom is loaded, check the docs in below link
@@ -19,16 +50,19 @@
 
 <body>
     
+    <h3>Shopping list</h3>
     <div id="container">
         item: <input type="text" id="item-name">
         value: <input type="text" id="item-value">
         <button id="add-item">add</button>
     </div>
+    <hr/>
 
     <ul class="items" id="items-list">
         
     </ul>
 
+    <hr/>
     <strong>Total</strong>:
     <div id="total">$</div>
     
