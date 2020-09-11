@@ -1,11 +1,3 @@
-/*
-for removing elements could be this way
-let element_to_delete = document.querySelector("selector").lastElementChild;
-element_to_delete.parentNode.removeChild(element_to_delete);
-or we could use ChildNode.remove()
-https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove
-*/
-
 let total_price = 0.00;
 
 function update_total() {
