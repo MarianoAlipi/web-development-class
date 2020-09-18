@@ -34,7 +34,7 @@ let add_pokemon_handler = (_) =>{
             let sprite = resp.data.sprites.front_default;
             // resp.data.sprites.versions["generation-v"]["black-white"].animated.front_default;
 
-            document.querySelector('#pokemon-list').appendChild(get_element_li(name, weight / 10, sprite));
+            document.querySelector('#pokemon-list').appendChild(get_element_li(name, weight, sprite));
 
             let new_item = document.querySelector('#pokemon-list').lastElementChild;
             new_item.querySelector('.remove-item').addEventListener('click', (event) => remove_item(new_item));
