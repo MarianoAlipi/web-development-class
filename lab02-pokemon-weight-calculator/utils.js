@@ -60,3 +60,22 @@ let add_item_to_list_with_template = () => {
         new_item.querySelector('.remove-item').addEventListener('click', (event) => remove_item(new_item));
     }
 }
+
+let thenable_handle_for_the_result_of_the_pokemon_request = (result) => {
+    // handle here the pokemon from the request
+  }
+  
+  let catchable_handle_for_the_error_of_the_pokemon_request = (err) => {
+    // handle here the pokemon error from the request
+  }
+  
+  /* 
+    for this it can be solved by adding a custom XMLHttpRequest but i don't recomend it, try to 
+    use other libs that basically solve this, an alternative you can use axios 
+    https://www.npmjs.com/package/axios
+  */
+  let get_pokemon_data = () => {
+    return new Promise((resolve, reject) => {
+      // add the logic of the request here
+    })
+  }
