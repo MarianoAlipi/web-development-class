@@ -45,26 +45,8 @@
         }
 
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="./utils.js"></script>
-    <script>
-        // DOMContentLoaded wait until all dom is loaded, check the docs in below link
-        // https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event
-        document.addEventListener("DOMContentLoaded", (_) => {
-
-            update_total();
-            
-            // The add button behavior.
-            document.querySelector('#add-item').addEventListener('click', add_item_to_list_with_template());
-
-            // Make the enter key press the add button.
-            document.querySelector("#item-value").addEventListener("keypress", (event) => {
-                if (event.keyCode === 13) {
-                    document.querySelector("#add-item").click();
-                }
-            });
-
-        });
-    </script>
 </head>
 
 <body>
@@ -80,7 +62,7 @@
     </div>
     <hr/>
 
-    <ul class="items" id="items-list">
+    <ul class="items" id="pokemon-list">
         
     </ul>
 
