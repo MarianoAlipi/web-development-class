@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Mariano García Alipi - A00822247 -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon weight calculator</title>
+    <style>
+
+        body {
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+        #title {
+            display: flex;
+        }
+        
+        #title p {
+            flex-grow: 8;
+            text-align: right;
+        }
+
+        #pokemon-list {
+            width: 40%;
+        }
+
+        .added-item {
+            padding: 1px;
+        }
+
+        .added-item .list-item {
+            display: flex;
+            flex-flow: row;
+            flex-direction: row;
+        }
+
+        .item-details {
+            width: 90%;
+        }
+
+        .invalid-item {
+            border: 2px solid red;
+        }
+
+    </style>
+    <script src="./utils.js"></script>
+    <script>
+        // DOMContentLoaded wait until all dom is loaded, check the docs in below link
+        // https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event
+        document.addEventListener("DOMContentLoaded", (_) => {
+
+            update_total();
+            
+            // The add button behavior.
+            document.querySelector('#add-item').addEventListener('click', add_item_to_list_with_template());
+
+            // Make the enter key press the add button.
+            document.querySelector("#item-value").addEventListener("keypress", (event) => {
+                if (event.keyCode === 13) {
+                    document.querySelector("#add-item").click();
+                }
+            });
+
+        });
+    </script>
+</head>
+
+<body>
+    
+    <div id="title">
+        <h3>Pokémon weight calculator</h3>
+        <p>Mariano García Alipi - A00822247</p>
+    </div>
+
+    <div id="container">
+        name: <input type="text" id="pokemon-name">
+        <button id="add-pokemon">add</button>
+    </div>
+    <hr/>
+
+    <ul class="items" id="items-list">
+        
+    </ul>
+
+    <hr/>
+    <strong>Total</strong>:
+    <div id="total"></div>
+
+</body>
+</html>
