@@ -30,12 +30,18 @@ let add_pokemon_handler = (_) =>{
             let sprite = resp.data.sprites.front_default;
 
             document.querySelector('#pokemon-list').appendChild(get_card_div(resp.data));
+            let new_item = document.querySelector('#pokemon-list').lastElementChild;
+            new_item.querySelector('.remove-item').addEventListener('click', (event) => remove_item(new_item));
 
             
         }).catch(function(error) {
             console.log(error);
             alert("There was an error obtaining that Pokémon's data.");
         });
+}
+
+let remove_item = (element_to_delete) => {
+    element_to_delete.remove();
 }
 
 function get_card_div(data) {
@@ -74,6 +80,8 @@ function get_card_div(data) {
                                     <td>${data.base_experience}</td>
                                 </tr>
                             </table>
+                            <div class='flex-break'></div>
+                            <button class=\"remove-item\">remove</button>
                            `;
 
     return template;
