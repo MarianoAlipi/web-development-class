@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Mariano García Alipi - A00822247 -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon cards</title>
+    <style>
+
+        body {
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+        #title {
+            display: flex;
+        }
+        
+        #title p {
+            flex-grow: 8;
+            text-align: right;
+        }
+
+        #pokemon-list {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .pokemon-card {
+            width: 18em;
+            margin: 0.5em;
+            padding: 1em;
+            border: 2px solid black;
+            border-radius: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flex-break {
+            flex-basis: 100%;
+            height: 0;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./utils.js"></script>
+</head>
+
+<body>
+    
+    <div id="title">
+        <h3>Pokémon cards</h3>
+        <p>Mariano García Alipi - A00822247</p>
+    </div>
+
+    <div id="container">
+        name: <input type="text" id="pokemon-name">
+        <button id="add-pokemon">add</button>
+    </div>
+    <hr/>
+
+    <div class="items" id="pokemon-list">
+        
+    </div>
+
+    <hr/>
+
+</body>
+</html>
