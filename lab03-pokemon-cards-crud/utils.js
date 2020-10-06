@@ -28,31 +28,21 @@ let create_card_handler = (_) => {
         .post(`http://localhost:8080/create/${cardName},${cardType},${cardDetails}`) 
         .then(resp => {
 
-            console.log(resp.data);
-
             if (resp.data.includes("error")) {
-                alert(resp.data);
+                if (resp.data == "error") {
+                    alert("The card could not be created. Make sure the Pokémon's name is correctly spelled.");
+                } else {
+                    alert(`The card could not be created. (${resp.data})`);
+                }
                 return;
             } else if (resp.data.includes("success")) {
-                alert(resp.data);
+                alert("Card created succesfully!");
                 return;
             }
-
-            /*
-            console.log(resp);
-
-            let name = resp.data.name;
-            let weight = resp.data.weight / 10;
-            let sprite = resp.data.sprites.front_default;
-
-            document.querySelector('#pokemon-list').appendChild(get_card_div(resp.data));
-            let new_item = document.querySelector('#pokemon-list').lastElementChild;
-            new_item.querySelector('.remove-item').addEventListener('click', (event) => remove_item(new_item));
-            */
             
         }).catch(function(error) {
             console.log(error);
-            alert("There was an error obtaining that Pokémon's data.");
+            alert("There was an error obtaining the data.");
         });
 }
 
@@ -76,7 +66,7 @@ let get_card_handler = (_) => {
         .then(resp => {
 
             if (typeof(resp.data) === 'string' && resp.data.includes("error")) {
-                alert(resp.data);
+                alert(`The card could not be obtained. (${resp.data})`);
                 return;
             }
 
@@ -86,7 +76,7 @@ let get_card_handler = (_) => {
             
         }).catch(function(error) {
             console.log(error);
-            alert("There was an error obtaining that Pokémon's data.");
+            alert("There was an error obtaining the data.");
         });
 };
 
@@ -109,8 +99,49 @@ let get_all_cards_handler = (_) => {
             
         }).catch(function(error) {
             console.log(error);
-            alert("There was an error obtaining that Pokémon's data.");
+            alert("There was an error obtaining the data.");
         });
+};
+
+// Handler for the 'update card' action.
+let update_card_handler = (_) => {
+
+    let nameField = document.getElementById("card-name-update");
+    let cardName = nameField.value.trim().toLowerCase();
+    
+    let cardDetailsField = document.getElementById("card-details-update");
+    let cardDetails = cardDetailsField.value.trim();
+    if (cardDetails == "") {
+        cardDetails = "-";
+    }
+
+    nameField.value = "";
+    cardDetailsField.value = "";
+    nameField.focus();
+    nameField.select();
+
+    // If the field is empty, don't add it.
+    if (cardName === "") {
+        return;
+    }
+
+    axios
+        .put(`http://localhost:8080/update/${cardName},${cardDetails}`) 
+        .then(resp => {
+
+            if (resp.data.includes("error")) {
+                alert(`The card could not be updated. Make sure the name is correctly spelled. (${resp.data})`);
+                return;
+            } else if (resp.data.includes("success")) {
+                alert("Card updated succesfully!");
+                return;
+            }
+            
+        }).catch(function(error) {
+            console.log(error);
+            alert("There was an error updating the data.");
+        });
+
 };
 
 // Handler for the 'delete card' action.
@@ -128,12 +159,34 @@ let delete_card_handler = (_) => {
         return;
     }
 
-    axios.delete(`http://localhost:8080/delete/${cardName}`);
+    axios
+        .delete(`http://localhost:8080/delete/${cardName}`)
+        .then(resp => {
+            if (resp.data.includes("success")) {
+                alert("Card deleted successfully!");
+            } else {
+                alert("Card could not be deleted.");
+            }
+        })
+        .catch(function(error) {
+            console.log(error);
+    });
 };
 
 // Handler for the 'delete all cards' action.
 let delete_all_cards_handler = (_) => {
-    axios.delete(`http://localhost:8080/deleteAll`);
+    axios
+        .delete(`http://localhost:8080/deleteAll`)
+        .then(resp => {
+            if (resp.data.includes("success")) {
+                alert("All cards deleted successfully!");
+            } else {
+                alert("Cards could not be deleted.");
+            }
+        })
+        .catch(function(error) {
+            console.log(error);
+    });
 };
 
 // Handler for the 'delete' button of each card.
@@ -211,6 +264,7 @@ document.addEventListener("DOMContentLoaded", (_) => {
     document.querySelector('#create-card').addEventListener('click', (event) => { create_card_handler() });
     document.querySelector('#get-card').addEventListener('click', (event) => { get_card_handler() });
     document.querySelector('#getall-cards').addEventListener('click', (event) => { get_all_cards_handler() });
+    document.querySelector('#update-card').addEventListener('click', (event) => { update_card_handler() });
     document.querySelector('#delete-card').addEventListener('click', (event) => { delete_card_handler() });
     document.querySelector('#deleteall-cards').addEventListener('click', (event) => { delete_all_cards_handler() });
 
@@ -220,7 +274,7 @@ document.addEventListener("DOMContentLoaded", (_) => {
             document.querySelector("#create-card").click();
         }
     });
-
+    
     document.querySelector("#card-name-get").addEventListener("keypress", (event) => {
         if (event.keyCode === 13) {
             document.querySelector("#get-card").click();
@@ -230,6 +284,12 @@ document.addEventListener("DOMContentLoaded", (_) => {
     document.querySelector("#card-name-delete").addEventListener("keypress", (event) => {
         if (event.keyCode === 13) {
             document.querySelector("#delete-card").click();
+        }
+    });
+    
+    document.querySelector("#card-name-update").addEventListener("keypress", (event) => {
+        if (event.keyCode === 13) {
+            document.querySelector("#update-card").click();
         }
     });
 

@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const axios = require('axios')
+const { response } = require('express')
 const app = express()
 const port = 8080
 let cards = {};
@@ -64,6 +65,21 @@ app.get('/getAll', (req, res) => {
     res.send(cards);
 });
 
+// Update card.
+app.put("/update/:cardName,:cardDetails", (req, res) => {
+
+    let cardName = req.params["cardName"];
+    let cardDetails = req.params["cardDetails"];
+
+    if (cards[cardName] != null) {
+        cards[cardName]["details"] = cardDetails;
+        res.send("success");
+    } else {
+        res.send("error:card_not_found");
+    }
+
+});
+
 // Delete card.
 app.delete('/delete/:cardName', (req, res) => {
     
@@ -71,12 +87,15 @@ app.delete('/delete/:cardName', (req, res) => {
 
     console.log("Deleting card '" + cardName + "'...");
     delete cards[cardName];
+
+    res.send("success");
 });
 
 // Delete all cards.
 app.delete('/deleteAll', (req, res) => {
     console.log("Deleting all cards...");
     cards = {};
+    res.send("success");
 });
 
 app.listen(port)
