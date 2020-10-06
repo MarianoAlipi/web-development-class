@@ -117,12 +117,12 @@ let delete_card_handler = (_) => {
         return;
     }
 
-    axios.get(`http://localhost:8080/delete/${cardName}`);
+    axios.delete(`http://localhost:8080/delete/${cardName}`);
 };
 
 // Handler for the 'delete all cards' action.
 let delete_all_cards_handler = (_) => {
-    axios.get(`http://localhost:8080/deleteAll`);
+    axios.delete(`http://localhost:8080/deleteAll`);
 };
 
 // Handler for the 'delete' button of each card.

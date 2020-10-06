@@ -3,7 +3,7 @@ const cors = require('cors')
 const axios = require('axios')
 const app = express()
 const port = 8080
-let pokemons = {};
+let cards = {};
 
 app.use(express.json())
 app.use(express.urlencoded({
@@ -17,7 +17,7 @@ app.post('/create/:cardName', (req, res) => {
 
     let cardName = req.params["cardName"];
     
-    if (pokemons[cardName] != null) {
+    if (cards[cardName] != null) {
         // console.log(pokemon_response.data); // Aquí está la data del pokemon
         console.log("A card with the same name ('" + cardName + "') already exists.");
         res.send("error:duplicate_card");
@@ -26,7 +26,7 @@ app.post('/create/:cardName', (req, res) => {
         axios
         .get(`https://pokeapi.co/api/v2/pokemon/${cardName}`) 
         .then(pokemon_response => {
-                pokemons[pokemon_response.data.name] = pokemon_response.data;
+                cards[pokemon_response.data.name] = pokemon_response.data;
                 // console.log(pokemon_response.data); // Aquí está la data del pokemon
                 // res.send(pokemon_response.data)
                 res.send("success");
@@ -42,7 +42,7 @@ app.get('/get/:cardName', (req, res) => {
 
     let cardName = req.params["cardName"];
 
-    let card = pokemons[cardName];
+    let card = cards[cardName];
 
     if (card != null) {
         console.log("Sending '" + cardName +"' card data to client...");
@@ -57,22 +57,22 @@ app.get('/get/:cardName', (req, res) => {
 // Get all cards.
 app.get('/getAll', (req, res) => {
     console.log("Sending all cards to client...");
-    res.send(pokemons);
+    res.send(cards);
 });
 
 // Delete card.
-app.get('/delete/:cardName', (req, res) => {
+app.delete('/delete/:cardName', (req, res) => {
     
     let cardName = req.params["cardName"];
 
     console.log("Deleting card '" + cardName + "'...");
-    delete pokemons[cardName];
+    delete cards[cardName];
 });
 
 // Delete all cards.
-app.get('/deleteAll', (req, res) => {
+app.delete('/deleteAll', (req, res) => {
     console.log("Deleting all cards...");
-    pokemons = {};
+    cards = {};
 });
 
 app.listen(port)
