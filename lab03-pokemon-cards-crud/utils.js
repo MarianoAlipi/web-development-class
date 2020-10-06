@@ -1,19 +1,20 @@
-let create_card_handler = (_) =>{
+// Handler for the 'create card' action.
+let create_card_handler = (_) => {
 
-    let pokemonNameField = document.getElementById("card-name-create");
-    let pokemonName = pokemonNameField.value.trim().toLowerCase();
+    let nameField = document.getElementById("card-name-create");
+    let cardName = nameField.value.trim().toLowerCase();
 
-    pokemonNameField.value = "";
-    pokemonNameField.focus();
-    pokemonNameField.select();
+    nameField.value = "";
+    nameField.focus();
+    nameField.select();
 
     // If the field is empty, don't add it.
-    if (pokemonName === "") {
+    if (cardName === "") {
         return;
     }
 
     axios
-        .post(`http://localhost:8080/create/${pokemonName}`) 
+        .post(`http://localhost:8080/create/${cardName}`) 
         .then(resp => {
 
             console.log(resp.data);
@@ -36,7 +37,6 @@ let create_card_handler = (_) =>{
             document.querySelector('#pokemon-list').appendChild(get_card_div(resp.data));
             let new_item = document.querySelector('#pokemon-list').lastElementChild;
             new_item.querySelector('.remove-item').addEventListener('click', (event) => remove_item(new_item));
-            document.querySelector('#pokemon-list').appendChild(get_card_div(resp.data));
             */
             
         }).catch(function(error) {
@@ -45,18 +45,53 @@ let create_card_handler = (_) =>{
         });
 }
 
+// Handler for the 'get card' action.
+let get_card_handler = (_) => {
+
+    let nameField = document.getElementById("card-name-get");
+    let cardName = nameField.value.trim().toLowerCase();
+
+    nameField.value = "";
+    nameField.focus();
+    nameField.select();
+
+    // If the field is empty, don't get it.
+    if (cardName === "") {
+        return;
+    }
+
+    axios
+        .get(`http://localhost:8080/get/${cardName}`) 
+        .then(resp => {
+
+            console.log(resp.data);
+
+            if (typeof(resp.data) === 'string' && resp.data.includes("error")) {
+                alert(resp.data);
+                return;
+            }
+
+            let name = resp.data.name;
+            let weight = resp.data.weight / 10;
+            let sprite = resp.data.sprites.front_default;
+
+            document.querySelector('#pokemon-list').appendChild(make_card_div(resp.data));
+            let new_item = document.querySelector('#pokemon-list').lastElementChild;
+            new_item.querySelector('.remove-item').addEventListener('click', (event) => remove_item(new_item));
+            
+        }).catch(function(error) {
+            console.log(error);
+            alert("There was an error obtaining that Pokémon's data.");
+        });
+}
+
+// Handler for the 'delete' button of each card.
 let remove_item = (element_to_delete) => {
     element_to_delete.remove();
 }
 
-function get_card_div(data) {
+function make_card_div(data) {
 
-    let template = document.createElement('div');
-    template.className = "pokemon-card";
-
-    template.innerHTML = `custom card: ${data}`;
-
-    /*
     let template = document.createElement('div');
     template.className = "pokemon-card";
 
@@ -94,7 +129,6 @@ function get_card_div(data) {
                             <div class='flex-break'></div>
                             <button class=\"remove-item\">remove</button>
                            `;
-    */
 
     return template;
 
@@ -104,13 +138,20 @@ function get_card_div(data) {
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event
 document.addEventListener("DOMContentLoaded", (_) => {
     
-    // The add button behavior.
+    // The buttons' behavior.
     document.querySelector('#create-card').addEventListener('click', (event) => { create_card_handler() });
+    document.querySelector('#get-card').addEventListener('click', (event) => { get_card_handler() });
 
-    // Make the enter key press the add button.
+    // Make the enter key press the buttons when typing in the fields.
     document.querySelector("#card-name-create").addEventListener("keypress", (event) => {
         if (event.keyCode === 13) {
             document.querySelector("#create-card").click();
+        }
+    });
+
+    document.querySelector("#card-name-get").addEventListener("keypress", (event) => {
+        if (event.keyCode === 13) {
+            document.querySelector("#get-card").click();
         }
     });
 

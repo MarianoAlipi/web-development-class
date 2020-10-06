@@ -11,18 +11,19 @@ app.use(express.urlencoded({
 }))
 app.use(cors())
 app.get('/favicon.ico', (req, res) => res.status(204));
-app.post('/create/:pokemonName', (req, res) => {
+// Create card.
+app.post('/create/:cardName', (req, res) => {
 
-    let pokemon_name = req.params["pokemonName"];
+    let cardName = req.params["cardName"];
     
-    if (pokemons[pokemon_name] != null) {
+    if (pokemons[cardName] != null) {
         // console.log(pokemon_response.data); // Aquí está la data del pokemon
         console.log("A card with the same name already exists.");
         res.send("error:duplicate_card");
     } else {
-        console.log("Requesting Pokémon data...");
+        console.log("Requesting Pokémon data through API...");
         axios
-        .get(`https://pokeapi.co/api/v2/pokemon/${pokemon_name}`) 
+        .get(`https://pokeapi.co/api/v2/pokemon/${cardName}`) 
         .then(pokemon_response => {
                 pokemons[pokemon_response.data.name] = pokemon_response.data;
                 // console.log(pokemon_response.data); // Aquí está la data del pokemon
@@ -33,6 +34,23 @@ app.post('/create/:pokemonName', (req, res) => {
                 res.send("error");
           });
     }
-})
+});
+
+// Get card.
+app.get('/get/:cardName', (req, res) => {
+
+    let cardName = req.params["cardName"];
+
+    let card = pokemons[cardName];
+
+    if (card != null) {
+        console.log("Sending card data to client...");
+        res.send(card);
+    } else {
+        console.log("A card with that name does not exist.");
+        res.send("error:card_not_found");
+    }
+
+});
 
 app.listen(port)
