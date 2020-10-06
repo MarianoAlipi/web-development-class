@@ -3,7 +3,7 @@ const cors = require('cors')
 const axios = require('axios')
 const app = express()
 const port = 8080
-let pokemons = {}
+let pokemons = {};
 
 app.use(express.json())
 app.use(express.urlencoded({
@@ -56,10 +56,23 @@ app.get('/get/:cardName', (req, res) => {
 
 // Get all cards.
 app.get('/getAll', (req, res) => {
-
     console.log("Sending all cards to client...");
     res.send(pokemons);
+});
 
+// Delete card.
+app.get('/delete/:cardName', (req, res) => {
+    
+    let cardName = req.params["cardName"];
+
+    console.log("Deleting card '" + cardName + "'...");
+    delete pokemons[cardName];
+});
+
+// Delete all cards.
+app.get('/deleteAll', (req, res) => {
+    console.log("Deleting all cards...");
+    pokemons = {};
 });
 
 app.listen(port)

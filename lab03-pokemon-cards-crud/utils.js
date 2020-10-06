@@ -68,7 +68,7 @@ let get_card_handler = (_) => {
                 alert(resp.data);
                 return;
             }
-            
+
             document.querySelector('#pokemon-list').appendChild(make_card_div(resp.data));
             let new_item = document.querySelector('#pokemon-list').lastElementChild;
             new_item.querySelector('.remove-item').addEventListener('click', (event) => remove_item(new_item));
@@ -100,6 +100,29 @@ let get_all_cards_handler = (_) => {
             console.log(error);
             alert("There was an error obtaining that Pokémon's data.");
         });
+};
+
+// Handler for the 'delete card' action.
+let delete_card_handler = (_) => {
+
+    let nameField = document.getElementById("card-name-delete");
+    let cardName = nameField.value.trim().toLowerCase();
+
+    nameField.value = "";
+    nameField.focus();
+    nameField.select();
+
+    // If the field is empty, don't send a request.
+    if (cardName === "") {
+        return;
+    }
+
+    axios.get(`http://localhost:8080/delete/${cardName}`);
+};
+
+// Handler for the 'delete all cards' action.
+let delete_all_cards_handler = (_) => {
+    axios.get(`http://localhost:8080/deleteAll`);
 };
 
 // Handler for the 'delete' button of each card.
@@ -159,6 +182,8 @@ document.addEventListener("DOMContentLoaded", (_) => {
     document.querySelector('#create-card').addEventListener('click', (event) => { create_card_handler() });
     document.querySelector('#get-card').addEventListener('click', (event) => { get_card_handler() });
     document.querySelector('#getall-cards').addEventListener('click', (event) => { get_all_cards_handler() });
+    document.querySelector('#delete-card').addEventListener('click', (event) => { delete_card_handler() });
+    document.querySelector('#deleteall-cards').addEventListener('click', (event) => { delete_all_cards_handler() });
 
     // Make the enter key press the buttons when typing in the fields.
     document.querySelector("#card-name-create").addEventListener("keypress", (event) => {
@@ -170,6 +195,12 @@ document.addEventListener("DOMContentLoaded", (_) => {
     document.querySelector("#card-name-get").addEventListener("keypress", (event) => {
         if (event.keyCode === 13) {
             document.querySelector("#get-card").click();
+        }
+    });
+    
+    document.querySelector("#card-name-delete").addEventListener("keypress", (event) => {
+        if (event.keyCode === 13) {
+            document.querySelector("#delete-card").click();
         }
     });
 
