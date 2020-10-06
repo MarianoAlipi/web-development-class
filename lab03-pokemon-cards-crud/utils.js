@@ -4,7 +4,15 @@ let create_card_handler = (_) => {
     let nameField = document.getElementById("card-name-create");
     let cardName = nameField.value.trim().toLowerCase();
 
+    let cardTypeSelect = document.getElementById("card-type");
+    let cardType = cardTypeSelect.value;
+    
+    let cardDetailsField = document.getElementById("card-details-create");
+    let cardDetails = cardDetailsField.value.trim();
+
     nameField.value = "";
+    cardTypeSelect.value = "pokemon";
+    cardDetailsField.value = "";
     nameField.focus();
     nameField.select();
 
@@ -14,7 +22,7 @@ let create_card_handler = (_) => {
     }
 
     axios
-        .post(`http://localhost:8080/create/${cardName}`) 
+        .post(`http://localhost:8080/create/${cardName},${cardType},${cardDetails}`) 
         .then(resp => {
 
             console.log(resp.data);

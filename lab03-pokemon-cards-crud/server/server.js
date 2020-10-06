@@ -13,27 +13,36 @@ app.use(cors())
 app.get('/favicon.ico', (req, res) => res.status(204));
 
 // Create card.
-app.post('/create/:cardName', (req, res) => {
+app.post('/create/:cardName,:cardType,:cardDetails', (req, res) => {
 
     let cardName = req.params["cardName"];
+    let cardType = req.params["cardType"];
+    let cardDetails = req.params["cardDetails"];
     
+    console.log(`card name: ${cardName}, card type: ${cardType}, card details: ${cardDetails}`);
+
     if (cards[cardName] != null) {
         // console.log(pokemon_response.data); // Aquí está la data del pokemon
         console.log("A card with the same name ('" + cardName + "') already exists.");
         res.send("error:duplicate_card");
     } else {
-        console.log("Requesting Pokémon '" + cardName + "' data through API...");
-        axios
-        .get(`https://pokeapi.co/api/v2/pokemon/${cardName}`) 
-        .then(pokemon_response => {
-                cards[pokemon_response.data.name] = pokemon_response.data;
-                // console.log(pokemon_response.data); // Aquí está la data del pokemon
-                // res.send(pokemon_response.data)
-                res.send("success");
-            }).catch(function(error) {
-                console.log(error);
-                res.send("error");
-          });
+        if (cardType == "pokemon") {
+            console.log("Requesting Pokémon '" + cardName + "' data through API...");
+            axios
+            .get(`https://pokeapi.co/api/v2/pokemon/${cardName}`) 
+            .then(pokemon_response => {
+                    cards[pokemon_response.data.name] = {pokemon_response.data};
+                    // console.log(pokemon_response.data); // Aquí está la data del pokemon
+                    // res.send(pokemon_response.data)
+                    res.send("success");
+                }).catch(function(error) {
+                    console.log(error);
+                    res.send("error");
+              });
+        } else {
+            // cards[cardName] = {type: cardType, details: cardDetails};
+            res.send("success");
+        }
     }
 });
 
