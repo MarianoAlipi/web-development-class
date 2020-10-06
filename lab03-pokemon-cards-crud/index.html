@@ -22,9 +22,16 @@
             text-align: right;
         }
 
-        #pokemon-list {
+        .flex {
             display: flex;
             flex-wrap: wrap;
+        }
+
+        .input-card {
+            margin: 0.25em;
+            padding: 0.5em;
+            border: 2px solid black;
+            border-radius: 5px;
         }
 
         .pokemon-card {
@@ -59,13 +66,61 @@
         <p>Mariano García Alipi - A00822247</p>
     </div>
 
-    <div id="container">
-        name: <input type="text" id="pokemon-name">
-        <button id="add-pokemon">add</button>
+    <div class="flex">
+
+        <!-- Create card -->
+        <div class="input-card">
+            <h4>Create card</h4>
+            
+            <label for="card-type">Type:</label>
+            <select name="card-type" id="card-type">
+                <option value="pokemon">Pokémon</option>
+                <option value="item">Item</option>
+                <option value="prize">Prize</option>
+                <option value="element">Element</option>
+            </select>
+            <div class="flex-break" style="margin-top: 1em;"></div>
+
+            <label for="card-name-create">Name:</label>
+            <input type="text" id="card-name-create" name="card-name-create">
+            <div class="flex-break" style="margin-top: 1em;"></div>
+
+            <button id="create-card">Create</button>
+        </div>
+        <!-- Get card -->
+        <div class="input-card">
+            <h4>Get card <button id="getall-pokemon">Get all</button></h4>
+
+            <label for="card-name-get">Name:</label>
+            <input type="text" id="card-name-get" name="card-name-get">
+            <div class="flex-break" style="margin-top: 1em;"></div>
+
+            <button id="get-pokemon">Get</button>
+        </div>
+        <!-- Update card -->
+        <div class="input-card">
+            <h4>Update card</h4>
+
+            <label for="card-name-update">Name:</label>
+            <input type="text" id="card-name-update" name="card-name-update">
+            <div class="flex-break" style="margin-top: 1em;"></div>
+
+            <button id="update-pokemon">Update</button>
+        </div>
+        <!-- Delete card -->
+        <div class="input-card">
+            <h4>Delete card</h4>
+
+            <label for="card-name-update">Name:</label>
+            <input type="text" id="card-name-delete" name="card-name-delete">
+            <div class="flex-break" style="margin-top: 1em;"></div>
+
+            <button id="delete-pokemon">Delete</button>
+        </div>
     </div>
     <hr/>
 
-    <div class="items" id="pokemon-list">
+    <div class="flex" id="pokemon-list">
         
     </div>
 

@@ -11,14 +11,14 @@ app.use(express.urlencoded({
 }))
 app.use(cors())
 app.get('/favicon.ico', (req, res) => res.status(204));
-app.get('/:pokemonName', (req, res) => {
+app.post('/create/:pokemonName', (req, res) => {
 
     let pokemon_name = req.params["pokemonName"];
-
+    
     if (pokemons[pokemon_name] != null) {
         // console.log(pokemon_response.data); // Aquí está la data del pokemon
-        console.log("Pokémon previously requested.");
-        res.send(pokemons[pokemon_name])
+        console.log("A card with the same name already exists.");
+        res.send("error:duplicate_card");
     } else {
         console.log("Requesting Pokémon data...");
         axios
@@ -26,13 +26,13 @@ app.get('/:pokemonName', (req, res) => {
         .then(pokemon_response => {
                 pokemons[pokemon_response.data.name] = pokemon_response.data;
                 // console.log(pokemon_response.data); // Aquí está la data del pokemon
-                res.send(pokemon_response.data)
+                // res.send(pokemon_response.data)
+                res.send("success");
             }).catch(function(error) {
                 console.log(error);
                 res.send("error");
           });
     }
-
 })
 
 app.listen(port)

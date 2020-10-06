@@ -1,6 +1,6 @@
 let add_pokemon_handler = (_) =>{
 
-    let pokemonNameField = document.getElementById("pokemon-name");
+    let pokemonNameField = document.getElementById("card-name-create");
     let pokemonName = pokemonNameField.value.trim().toLowerCase();
 
     pokemonNameField.value = "";
@@ -13,16 +13,20 @@ let add_pokemon_handler = (_) =>{
     }
 
     axios
-        .get(`http://localhost:8080/${pokemonName}`) 
+        .post(`http://localhost:8080/create/${pokemonName}`) 
         .then(resp => {
 
-            // console.log(resp.data);
+            console.log(resp.data);
 
-            if (resp === "error") {
-                alert("There was an error obtaining that Pokémon's data.");
+            if (resp.data.includes("error")) {
+                alert(resp.data);
+                return;
+            } else if (resp.data.includes("success")) {
+                alert(resp.data);
                 return;
             }
 
+            /*
             console.log(resp);
 
             let name = resp.data.name;
@@ -32,7 +36,8 @@ let add_pokemon_handler = (_) =>{
             document.querySelector('#pokemon-list').appendChild(get_card_div(resp.data));
             let new_item = document.querySelector('#pokemon-list').lastElementChild;
             new_item.querySelector('.remove-item').addEventListener('click', (event) => remove_item(new_item));
-
+            document.querySelector('#pokemon-list').appendChild(get_card_div(resp.data));
+            */
             
         }).catch(function(error) {
             console.log(error);
@@ -46,6 +51,12 @@ let remove_item = (element_to_delete) => {
 
 function get_card_div(data) {
 
+    let template = document.createElement('div');
+    template.className = "pokemon-card";
+
+    template.innerHTML = `custom card: ${data}`;
+
+    /*
     let template = document.createElement('div');
     template.className = "pokemon-card";
 
@@ -83,6 +94,7 @@ function get_card_div(data) {
                             <div class='flex-break'></div>
                             <button class=\"remove-item\">remove</button>
                            `;
+    */
 
     return template;
 
@@ -93,16 +105,16 @@ function get_card_div(data) {
 document.addEventListener("DOMContentLoaded", (_) => {
     
     // The add button behavior.
-    document.querySelector('#add-pokemon').addEventListener('click', (event) => { add_pokemon_handler() });
+    document.querySelector('#create-card').addEventListener('click', (event) => { add_pokemon_handler() });
 
     // Make the enter key press the add button.
-    document.querySelector("#pokemon-name").addEventListener("keypress", (event) => {
+    document.querySelector("#card-name-create").addEventListener("keypress", (event) => {
         if (event.keyCode === 13) {
-            document.querySelector("#add-pokemon").click();
+            document.querySelector("#create-card").click();
         }
     });
 
-    document.getElementById("pokemon-name").focus();
-    document.getElementById("pokemon-name").select();
+    document.getElementById("card-name-create").focus();
+    document.getElementById("card-name-create").select();
 
 });
