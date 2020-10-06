@@ -34,6 +34,10 @@
             border-radius: 5px;
         }
 
+        .input-card > button {
+            width: 100%;
+        }
+
         .pokemon-card {
             width: 18em;
             margin: 0.5em;
@@ -84,7 +88,13 @@
             <label for="card-name-create">Name:</label>
             <input type="text" id="card-name-create" name="card-name-create">
             <div class="flex-break" style="margin-top: 1em;"></div>
-
+            
+            <label for="card-details-create">Details:</label>
+            <textarea type="text" id="card-details-create" name="card-details-create"
+                style="resize: none" rows="3">
+            </textarea>
+            <div class="flex-break" style="margin-top: 1em;"></div>
+            
             <button id="create-card">Create</button>
         </div>
         <!-- Get card -->
@@ -95,7 +105,7 @@
             <input type="text" id="card-name-get" name="card-name-get">
             <div class="flex-break" style="margin-top: 1em;"></div>
 
-            <button id="get-pokemon">Get</button>
+            <button id="get-card">Get</button>
         </div>
         <!-- Update card -->
         <div class="input-card">
@@ -105,17 +115,17 @@
             <input type="text" id="card-name-update" name="card-name-update">
             <div class="flex-break" style="margin-top: 1em;"></div>
 
-            <button id="update-pokemon">Update</button>
+            <button id="update-card">Update</button>
         </div>
         <!-- Delete card -->
         <div class="input-card">
-            <h4>Delete card</h4>
+            <h4>Delete card <button id="deleteall-cards">Delete all</button></h4>
 
             <label for="card-name-update">Name:</label>
             <input type="text" id="card-name-delete" name="card-name-delete">
             <div class="flex-break" style="margin-top: 1em;"></div>
 
-            <button id="delete-pokemon">Delete</button>
+            <button id="delete-card">Delete</button>
         </div>
     </div>
     <hr/>

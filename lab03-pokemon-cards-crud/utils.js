@@ -1,4 +1,4 @@
-let add_pokemon_handler = (_) =>{
+let create_card_handler = (_) =>{
 
     let pokemonNameField = document.getElementById("card-name-create");
     let pokemonName = pokemonNameField.value.trim().toLowerCase();
@@ -105,7 +105,7 @@ function get_card_div(data) {
 document.addEventListener("DOMContentLoaded", (_) => {
     
     // The add button behavior.
-    document.querySelector('#create-card').addEventListener('click', (event) => { add_pokemon_handler() });
+    document.querySelector('#create-card').addEventListener('click', (event) => { create_card_handler() });
 
     // Make the enter key press the add button.
     document.querySelector("#card-name-create").addEventListener("keypress", (event) => {
