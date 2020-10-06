@@ -9,6 +9,9 @@ let create_card_handler = (_) => {
     
     let cardDetailsField = document.getElementById("card-details-create");
     let cardDetails = cardDetailsField.value.trim();
+    if (cardDetails == "") {
+        cardDetails = "-";
+    }
 
     nameField.value = "";
     cardTypeSelect.value = "pokemon";
@@ -138,45 +141,63 @@ let remove_item = (element_to_delete) => {
     element_to_delete.remove();
 }
 
+// Generate the HTML for a card.
 function make_card_div(data) {
 
     let template = document.createElement('div');
     template.className = "pokemon-card";
 
-    let types = [];
-    data.types.forEach(element => types.push(element.type.name[0].toUpperCase() + element.type.name.slice(1)));
-
-    template.innerHTML =   `
-                            <div style='display: flex; justify-content: center;'>
-                                <h4 style='padding: 0 0.5em 0 0;'>ID: ${data.id}</h4>
-                                <h3 style='padding: 0 0 0.5em;'>${data.name[0].toUpperCase() + data.name.slice(1)}</h3>
-                            </div>
-
-                            <div class='flex-break'></div>
-                            <img src='https://pokeres.bastionbot.org/images/pokemon/${data.id}.png' style='width: 50%; padding: 1em 0 2em 0;'>
-                            <div class='flex-break'></div>
-
-                            <table>
-                                <tr>
-                                    <td>Types</td>
-                                    <td>${types}</td>
-                                </tr>
-                                <tr>
-                                    <td>Weight</td>
-                                    <td>${(data.weight / 10).toFixed(2)} kg</td>
-                                </tr>
-                                <tr>
-                                    <td>Height</td>
-                                    <td>${data.height * 10} cm</td>
-                                </tr>
-                                <tr>
-                                    <td>Base experience</td>
-                                    <td>${data.base_experience}</td>
-                                </tr>
-                            </table>
-                            <div class='flex-break'></div>
-                            <button class=\"remove-item\">remove</button>
-                           `;
+    switch (data.type) {
+        case "pokemon":
+            let types = [];
+            data.details.types.forEach(element => types.push(element.type.name[0].toUpperCase() + element.type.name.slice(1)));
+        
+            template.innerHTML =   `
+                                    <div style='display: flex; justify-content: center;'>
+                                        <h4 style='padding: 0 0.5em 0 0;'>ID: ${data.details.id}</h4>
+                                        <h3 style='padding: 0 0 0.5em;'>${data.details.name[0].toUpperCase() + data.details.name.slice(1)}</h3>
+                                    </div>
+        
+                                    <div class='flex-break'></div>
+                                    <img src='https://pokeres.bastionbot.org/images/pokemon/${data.details.id}.png' style='width: 50%; padding: 1em 0 2em 0;'>
+                                    <div class='flex-break'></div>
+        
+                                    <table>
+                                        <tr>
+                                            <td>Types</td>
+                                            <td>${types}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Weight</td>
+                                            <td>${(data.details.weight / 10).toFixed(2)} kg</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Height</td>
+                                            <td>${data.details.height * 10} cm</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Base experience</td>
+                                            <td>${data.details.base_experience}</td>
+                                        </tr>
+                                    </table>
+                                    <div class='flex-break'></div>
+                                    <button class=\"remove-item\">remove</button>
+                                   `;
+            break;
+        default:
+            template.innerHTML = `
+                                <div style='display: flex; justify-content: center; flex-wrap: wrap;'>
+                                    <h3 style='padding: 0 0 0.5em;'>${data.name[0].toUpperCase() + data.name.substring(1)}</h3>
+                                    <div class='flex-break'></div>
+                                    <h5>Type: ${data.type[0].toUpperCase() + data.type.substring(1)}</h5>
+                                </div>
+                                <div class='flex-break'></div>
+                                <p>${data.details}</p>
+                                <div class='flex-break'></div>
+                                <button class=\"remove-item\">remove</button>
+                                `;
+            break;
+    }
 
     return template;
 
