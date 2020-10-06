@@ -31,7 +31,7 @@ app.post('/create/:cardName,:cardType,:cardDetails', (req, res) => {
             axios
             .get(`https://pokeapi.co/api/v2/pokemon/${cardName}`) 
             .then(pokemon_response => {
-                    cards[pokemon_response.data.name] = {pokemon_response.data};
+                    cards[pokemon_response.data.name] = pokemon_response.data;
                     // console.log(pokemon_response.data); // Aquí está la data del pokemon
                     // res.send(pokemon_response.data)
                     res.send("success");
@@ -40,7 +40,7 @@ app.post('/create/:cardName,:cardType,:cardDetails', (req, res) => {
                     res.send("error");
               });
         } else {
-            // cards[cardName] = {type: cardType, details: cardDetails};
+            cards[cardName] = {type: cardType, details: cardDetails};
             res.send("success");
         }
     }
