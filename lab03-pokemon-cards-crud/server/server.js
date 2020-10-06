@@ -53,4 +53,12 @@ app.get('/get/:cardName', (req, res) => {
 
 });
 
+// Get all cards.
+app.get('/getAll', (req, res) => {
+
+    console.log("Sending all cards to client...");
+    res.send(pokemons);
+
+});
+
 app.listen(port)

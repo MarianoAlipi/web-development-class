@@ -61,20 +61,14 @@ let get_card_handler = (_) => {
     }
 
     axios
-        .get(`http://localhost:8080/get/${cardName}`) 
+        .get(`http://localhost:8080/get/${cardName}`)
         .then(resp => {
-
-            console.log(resp.data);
 
             if (typeof(resp.data) === 'string' && resp.data.includes("error")) {
                 alert(resp.data);
                 return;
             }
-
-            let name = resp.data.name;
-            let weight = resp.data.weight / 10;
-            let sprite = resp.data.sprites.front_default;
-
+            
             document.querySelector('#pokemon-list').appendChild(make_card_div(resp.data));
             let new_item = document.querySelector('#pokemon-list').lastElementChild;
             new_item.querySelector('.remove-item').addEventListener('click', (event) => remove_item(new_item));
@@ -83,7 +77,30 @@ let get_card_handler = (_) => {
             console.log(error);
             alert("There was an error obtaining that Pokémon's data.");
         });
-}
+};
+
+// Handler for the 'get all cards' action.
+let get_all_cards_handler = (_) => {
+    axios
+        .get(`http://localhost:8080/getAll`)
+        .then(resp => {
+
+            if (typeof(resp.data) === 'string' && resp.data.includes("error")) {
+                alert(resp.data);
+                return;
+            }
+            
+            for (const card in resp.data) {
+                document.querySelector('#pokemon-list').appendChild(make_card_div(resp.data[card]));
+                let new_item = document.querySelector('#pokemon-list').lastElementChild;
+                new_item.querySelector('.remove-item').addEventListener('click', (event) => remove_item(new_item));
+            }
+            
+        }).catch(function(error) {
+            console.log(error);
+            alert("There was an error obtaining that Pokémon's data.");
+        });
+};
 
 // Handler for the 'delete' button of each card.
 let remove_item = (element_to_delete) => {
@@ -141,6 +158,7 @@ document.addEventListener("DOMContentLoaded", (_) => {
     // The buttons' behavior.
     document.querySelector('#create-card').addEventListener('click', (event) => { create_card_handler() });
     document.querySelector('#get-card').addEventListener('click', (event) => { get_card_handler() });
+    document.querySelector('#getall-cards').addEventListener('click', (event) => { get_all_cards_handler() });
 
     // Make the enter key press the buttons when typing in the fields.
     document.querySelector("#card-name-create").addEventListener("keypress", (event) => {
