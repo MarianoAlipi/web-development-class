@@ -5,7 +5,11 @@ const { response } = require('express')
 const mongoose = require('mongoose')
 const app = express()
 const port = 8080
+// The cards in the Mongo database.
 let cards = {};
+// The cards without any Mongo format.
+// Use this one for "get" routes.
+let cardsInfo = {};
 
 app.use(express.json())
 app.use(express.urlencoded({
@@ -24,23 +28,23 @@ db.on('error', console.error.bind(console, 'Connection error:'));
 db.once('open', function() {
     
     console.log("Connected to MongoDB database.");
-    
-    const kittySchema = new mongoose.Schema({
-        name: String
+
+    const cardSchema = new mongoose.Schema({
+        name: { type: String, required: true, unique: true},
+        cardType: { type: String, required: true },
+        details: String,
+        pokemonTypes: [String],
+        weight: { type: Number, min: 0 },
+        height: { type: Number, min: 0 },
+        baseExperience: { type: Number, min: 0 }
     });
-    
-    kittySchema.methods.speak = function () {
-        const greeting = this.name
-            ? "Meow name is " + this.name
-            : "I don't have a name";
-        console.log(greeting);
-    }
 
-
-    const Kitten = mongoose.model('Kitten', kittySchema);
-
-    const silence = new Kitten({name: 'Silence'});
-    silence.speak();
+    const Card = mongoose.model('Card', cardSchema);
+    cards = Card.find({});
+    console.log("typeof: " + typeof cards);
+    console.log("length: " + cards.length);
+    console.log("cards: ");
+    console.log(cards);
     
     // Routes.
     // Ignore favicon.
@@ -48,10 +52,16 @@ db.once('open', function() {
     // Create card.
     app.post('/create/:cardName,:cardType,:cardDetails', (req, res) => {
         
+        let newCard = new Card();
+
         let cardName = req.params["cardName"];
         let cardType = req.params["cardType"];
         let cardDetails = req.params["cardDetails"];
         
+        newCard.name = cardName;
+        newCard.cardType = cardType;
+        newCard.details = cardDetails;
+
         if (cards[cardName] != null) {
             console.log("A card with the same name ('" + cardName + "') already exists.");
             res.send("error:duplicate_card");
@@ -61,14 +71,15 @@ db.once('open', function() {
                 axios
             .get(`https://pokeapi.co/api/v2/pokemon/${cardName}`) 
             .then(pokemon_response => {
-                cards[pokemon_response.data.name] = {type: cardType, details: pokemon_response.data};
+                newCard.details = pokemon_response.data;
+                cards[pokemon_response.data.name] = newCard;
                 res.send("success");
             }).catch(function(error) {
                 console.log(error);
                 res.send("error");
             });
             } else {
-                cards[cardName] = {name: cardName, type: cardType, details: cardDetails};
+                cards[cardName] = newCard;
                 res.send("success");
             }
         }
