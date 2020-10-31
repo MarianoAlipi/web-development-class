@@ -5,11 +5,6 @@ const { response } = require('express')
 const mongoose = require('mongoose')
 const app = express()
 const port = 8080
-// The cards in the Mongo database.
-let cards = {};
-// The cards without any Mongo format.
-// Use this one for "get" routes.
-let cardsInfo = {};
 
 app.use(express.json())
 app.use(express.urlencoded({
@@ -31,6 +26,7 @@ db.once('open', function() {
 
     const cardSchema = new mongoose.Schema({
         name: { type: String, required: true, unique: true},
+        pokemonID: { type: Number },
         cardType: { type: String, required: true },
         details: String,
         pokemonTypes: [String],
@@ -40,17 +36,12 @@ db.once('open', function() {
     });
 
     const Card = mongoose.model('Card', cardSchema);
-    cards = Card.find({});
-    console.log("typeof: " + typeof cards);
-    console.log("length: " + cards.length);
-    console.log("cards: ");
-    console.log(cards);
     
     // Routes.
     // Ignore favicon.
     app.get('/favicon.ico', (req, res) => res.status(204));
     // Create card.
-    app.post('/create/:cardName,:cardType,:cardDetails', (req, res) => {
+    app.post('/create/:cardName,:cardType,:cardDetails', async (req, res) => {
         
         let newCard = new Card();
 
@@ -62,22 +53,45 @@ db.once('open', function() {
         newCard.cardType = cardType;
         newCard.details = cardDetails;
 
-        if (cards[cardName] != null) {
+        let queryRes = await Card.findOne({cardName: newCard.name}).exec();
+        console.log("queryRes: " + queryRes);
+        
+        if (queryRes != null) {
             console.log("A card with the same name ('" + cardName + "') already exists.");
             res.send("error:duplicate_card");
         } else {
             if (cardType == "pokemon") {
                 console.log("Requesting Pokémon '" + cardName + "' data through API...");
                 axios
-            .get(`https://pokeapi.co/api/v2/pokemon/${cardName}`) 
-            .then(pokemon_response => {
-                newCard.details = pokemon_response.data;
-                cards[pokemon_response.data.name] = newCard;
-                res.send("success");
-            }).catch(function(error) {
-                console.log(error);
-                res.send("error");
-            });
+                .get(`https://pokeapi.co/api/v2/pokemon/${cardName}`) 
+                .then(pokemon_response => {
+                    
+                    const data = pokemon_response.data;
+
+                    newCard.pokemonID = data.id;
+
+                    let types = [];
+                    data.types.forEach(element => types.push(element.type.name[0].toUpperCase() + element.type.name.slice(1)));
+                    newCard.pokemonTypes = types;
+
+                    newCard.weight = data.weight / 10; // Converted to kg.
+                    newCard.height = data.height * 10; // Converted to cm.
+                    newCard.baseExperience = data.base_experience;
+
+                    // Save the card.
+                    newCard.save(function (err, result) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log(result);
+                        }
+                    });
+
+                    res.send("success");
+                }).catch(function(error) {
+                    console.log(error);
+                    res.send("error");
+                });
             } else {
                 cards[cardName] = newCard;
                 res.send("success");
