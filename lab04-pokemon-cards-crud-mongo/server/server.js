@@ -53,7 +53,7 @@ db.once('open', function() {
         newCard.cardType = cardType;
         newCard.details = cardDetails;
 
-        const queryRes = await Card.findOne({cardName: newCard.name}).exec();
+        const queryRes = await Card.findOne({name: cardName}).exec();
         console.log("queryRes: " + queryRes);
         
         if (queryRes != null) {
@@ -102,14 +102,17 @@ db.once('open', function() {
     // Get card.
     app.get('/get/:cardName', async (req, res) => {
         
-        const cardNameToGet = req.params["cardName"];
-        const queryRes = await Card.findOne({cardName: cardNameToGet}).exec();
+        const cardName = req.params["cardName"];
+        const queryRes = await Card.findOne({name: cardName}).exec();
         
+        console.log("get '" + cardName + "': queryRes:");
+        console.log(queryRes);
+
         if (queryRes != null) {
-            console.log("Sending '" + cardNameToGet +"' card data to client...");
+            console.log("Sending '" + cardName +"' card data to client...");
             res.send(queryRes);
         } else {
-            console.log("A card with that name ('" + cardNameToGet + "') does not exist.");
+            console.log("A card with that name ('" + cardName + "') does not exist.");
             res.send("error:card_not_found");
         }
         
@@ -126,10 +129,10 @@ db.once('open', function() {
     // Update card.
     app.put("/update/:cardName,:cardDetails", async (req, res) => {
         
-        let cardNameToUpdate = req.params["cardName"];
-        let newCardDetails = req.params["cardDetails"];
+        let cardName = req.params["cardName"];
+        let cardDetails = req.params["cardDetails"];
         
-        await Card.update({cardName: cardNameToUpdate}, {cardDetails: newCardDetails},
+        await Card.update({name: cardName}, {details: cardDetails},
             function (err, res) {
                 if (err) {
                     console.log(err);
@@ -155,11 +158,11 @@ db.once('open', function() {
     // Delete card.
     app.delete('/delete/:cardName', async (req, res) => {
         
-        let cardNameToDelete = req.params["cardName"];
+        let cardName = req.params["cardName"];
         
-        console.log("Deleting card '" + cardNameToDelete + "'...");
+        console.log("Deleting card '" + cardName + "'...");
         // delete cards[cardNameToDelete];
-        await Card.delete({cardName: cardNameToDelete}, function (err) {
+        await Card.delete({name: cardName}, function (err) {
             if (err) {
                 console.log(err);
             }
