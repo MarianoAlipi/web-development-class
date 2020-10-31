@@ -45,15 +45,15 @@ db.once('open', function() {
         
         let newCard = new Card();
 
-        let cardName = req.params["cardName"];
-        let cardType = req.params["cardType"];
-        let cardDetails = req.params["cardDetails"];
+        const cardName = req.params["cardName"];
+        const cardType = req.params["cardType"];
+        const cardDetails = req.params["cardDetails"];
         
         newCard.name = cardName;
         newCard.cardType = cardType;
         newCard.details = cardDetails;
 
-        let queryRes = await Card.findOne({cardName: newCard.name}).exec();
+        const queryRes = await Card.findOne({cardName: newCard.name}).exec();
         console.log("queryRes: " + queryRes);
         
         if (queryRes != null) {
@@ -100,10 +100,10 @@ db.once('open', function() {
     });
 
     // Get card.
-    app.get('/get/:cardName', (req, res) => {
+    app.get('/get/:cardName', async (req, res) => {
         
         const cardNameToGet = req.params["cardName"];
-        const queryRes = Card.findOne({cardName: cardNameToGet}).exec();
+        const queryRes = await Card.findOne({cardName: cardNameToGet}).exec();
         
         if (queryRes != null) {
             console.log("Sending '" + cardNameToGet +"' card data to client...");
@@ -116,46 +116,50 @@ db.once('open', function() {
     });
 
     // Get all cards.
-    app.get('/getAll', (req, res) => {
+    app.get('/getAll', async (req, res) => {
         console.log("Sending all cards to client...");
         // res.send(cards);
-        const cards = Card.find({});
+        const cards = await Card.find({});
         res.send(cards);
     });
 
     // Update card.
-    app.put("/update/:cardName,:cardDetails", (req, res) => {
+    app.put("/update/:cardName,:cardDetails", async (req, res) => {
         
         let cardNameToUpdate = req.params["cardName"];
         let newCardDetails = req.params["cardDetails"];
         
-        Card.update({cardName: cardNameToUpdate}, {cardDetails: newCardDetails},
+        await Card.update({cardName: cardNameToUpdate}, {cardDetails: newCardDetails},
             function (err, res) {
                 if (err) {
                     console.log(err);
+                    res.send("error:card_not_found");
                 } else {
                     console.log(res);
+                    res.send("success");
                 }
             }
         );
 
+        /*
         if (cards[cardNameToUpdate] != null) {
             cards[cardNameToUpdate]["details"] = newCardDetails;
             res.send("success");
         } else {
             res.send("error:card_not_found");
         }
+        */
         
     });
 
     // Delete card.
-    app.delete('/delete/:cardName', (req, res) => {
+    app.delete('/delete/:cardName', async (req, res) => {
         
         let cardNameToDelete = req.params["cardName"];
         
         console.log("Deleting card '" + cardNameToDelete + "'...");
         // delete cards[cardNameToDelete];
-        Card.delete({cardName: cardNameToDelete}, function (err) {
+        await Card.delete({cardName: cardNameToDelete}, function (err) {
             if (err) {
                 console.log(err);
             }
@@ -165,10 +169,10 @@ db.once('open', function() {
     });
 
     // Delete all cards.
-    app.delete('/deleteAll', (req, res) => {
+    app.delete('/deleteAll', async (req, res) => {
         console.log("Deleting all cards...");
         // cards = {};
-        Card.delete({}, function (err) {
+        await Card.delete({}, function (err) {
             if (err) {
                 console.log(err);
             }
