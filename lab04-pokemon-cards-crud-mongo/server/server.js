@@ -102,15 +102,14 @@ db.once('open', function() {
     // Get card.
     app.get('/get/:cardName', (req, res) => {
         
-        let cardName = req.params["cardName"];
+        const cardNameToGet = req.params["cardName"];
+        const queryRes = Card.findOne({cardName: cardNameToGet}).exec();
         
-        let card = cards[cardName];
-        
-        if (card != null) {
-            console.log("Sending '" + cardName +"' card data to client...");
-            res.send(card);
+        if (queryRes != null) {
+            console.log("Sending '" + cardNameToGet +"' card data to client...");
+            res.send(queryRes);
         } else {
-            console.log("A card with that name ('" + cardName + "') does not exist.");
+            console.log("A card with that name ('" + cardNameToGet + "') does not exist.");
             res.send("error:card_not_found");
         }
         
@@ -119,17 +118,29 @@ db.once('open', function() {
     // Get all cards.
     app.get('/getAll', (req, res) => {
         console.log("Sending all cards to client...");
+        // res.send(cards);
+        const cards = Card.find({});
         res.send(cards);
     });
 
     // Update card.
     app.put("/update/:cardName,:cardDetails", (req, res) => {
         
-        let cardName = req.params["cardName"];
-        let cardDetails = req.params["cardDetails"];
+        let cardNameToUpdate = req.params["cardName"];
+        let newCardDetails = req.params["cardDetails"];
         
-        if (cards[cardName] != null) {
-            cards[cardName]["details"] = cardDetails;
+        Card.update({cardName: cardNameToUpdate}, {cardDetails: newCardDetails},
+            function (err, res) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log(res);
+                }
+            }
+        );
+
+        if (cards[cardNameToUpdate] != null) {
+            cards[cardNameToUpdate]["details"] = newCardDetails;
             res.send("success");
         } else {
             res.send("error:card_not_found");
@@ -140,10 +151,15 @@ db.once('open', function() {
     // Delete card.
     app.delete('/delete/:cardName', (req, res) => {
         
-        let cardName = req.params["cardName"];
+        let cardNameToDelete = req.params["cardName"];
         
-        console.log("Deleting card '" + cardName + "'...");
-        delete cards[cardName];
+        console.log("Deleting card '" + cardNameToDelete + "'...");
+        // delete cards[cardNameToDelete];
+        Card.delete({cardName: cardNameToDelete}, function (err) {
+            if (err) {
+                console.log(err);
+            }
+        });
         
         res.send("success");
     });
@@ -151,7 +167,12 @@ db.once('open', function() {
     // Delete all cards.
     app.delete('/deleteAll', (req, res) => {
         console.log("Deleting all cards...");
-        cards = {};
+        // cards = {};
+        Card.delete({}, function (err) {
+            if (err) {
+                console.log(err);
+            }
+        });
         res.send("success");
     });
 
