@@ -93,7 +93,14 @@ db.once('open', function() {
                     res.send("error");
                 });
             } else {
-                cards[cardName] = newCard;
+                // Save the card.
+                newCard.save(function (err, result) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log(result);
+                    }
+                });
                 res.send("success");
             }
         }
@@ -104,9 +111,6 @@ db.once('open', function() {
         
         const cardName = req.params["cardName"];
         const queryRes = await Card.findOne({name: cardName}).exec();
-        
-        console.log("get '" + cardName + "': queryRes:");
-        console.log(queryRes);
 
         if (queryRes != null) {
             console.log("Sending '" + cardName +"' card data to client...");
@@ -120,8 +124,9 @@ db.once('open', function() {
 
     // Get all cards.
     app.get('/getAll', async (req, res) => {
+
         console.log("Sending all cards to client...");
-        // res.send(cards);
+        
         const cards = await Card.find({});
         res.send(cards);
     });
@@ -132,27 +137,17 @@ db.once('open', function() {
         let cardName = req.params["cardName"];
         let cardDetails = req.params["cardDetails"];
         
-        await Card.update({name: cardName}, {details: cardDetails},
-            function (err, res) {
+        await Card.updateOne({name: cardName}, {details: cardDetails},
+            function (err, res2) {
                 if (err) {
                     console.log(err);
                     res.send("error:card_not_found");
                 } else {
-                    console.log(res);
+                    console.log(res2);
                     res.send("success");
                 }
             }
-        );
-
-        /*
-        if (cards[cardNameToUpdate] != null) {
-            cards[cardNameToUpdate]["details"] = newCardDetails;
-            res.send("success");
-        } else {
-            res.send("error:card_not_found");
-        }
-        */
-        
+        );        
     });
 
     // Delete card.
@@ -161,10 +156,11 @@ db.once('open', function() {
         let cardName = req.params["cardName"];
         
         console.log("Deleting card '" + cardName + "'...");
-        // delete cards[cardNameToDelete];
-        await Card.delete({name: cardName}, function (err) {
+
+        await Card.deleteOne({name: cardName}, function (err) {
             if (err) {
                 console.log(err);
+                res.send("error");
             }
         });
         
@@ -173,9 +169,10 @@ db.once('open', function() {
 
     // Delete all cards.
     app.delete('/deleteAll', async (req, res) => {
+
         console.log("Deleting all cards...");
-        // cards = {};
-        await Card.delete({}, function (err) {
+
+        await Card.deleteMany({}, function (err) {
             if (err) {
                 console.log(err);
             }

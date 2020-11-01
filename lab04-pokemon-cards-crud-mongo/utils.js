@@ -55,15 +55,15 @@ let get_card_handler = (_) => {
     nameField.value = "";
     nameField.focus();
     nameField.select();
-
+    
     // If the field is empty, don't get it.
     if (cardName === "") {
         return;
     }
-
+    
     axios
-        .get(`http://localhost:8080/get/${cardName}`)
-        .then(resp => {
+    .get(`http://localhost:8080/get/${cardName}`)
+    .then(resp => {
 
             if (typeof(resp.data) === 'string' && resp.data.includes("error")) {
                 alert(`The card could not be obtained. (${resp.data})`);
@@ -189,48 +189,51 @@ let delete_all_cards_handler = (_) => {
     });
 };
 
-// Handler for the 'delete' button of each card.
-let remove_item = (element_to_delete) => {
-    element_to_delete.remove();
+// Handler for the 'remove' button of each card.
+let remove_item = (element_to_remove) => {
+    element_to_remove.remove();
+}
+
+// Handler for the 'remove all cards' button.
+let remove_all_cards = () => {
+    document.getElementById("pokemon-list").innerHTML = "";
 }
 
 // Generate the HTML for a card.
+// 'data' is a document from the database.
 function make_card_div(data) {
 
     let template = document.createElement('div');
     template.className = "pokemon-card";
 
-    switch (data.type) {
+    switch (data.cardType) {
         case "pokemon":
-            let types = [];
-            data.details.types.forEach(element => types.push(element.type.name[0].toUpperCase() + element.type.name.slice(1)));
-        
             template.innerHTML =   `
                                     <div style='display: flex; justify-content: center;'>
-                                        <h4 style='padding: 0 0.5em 0 0;'>ID: ${data.details.id}</h4>
-                                        <h3 style='padding: 0 0 0.5em;'>${data.details.name[0].toUpperCase() + data.details.name.slice(1)}</h3>
+                                        <h4 style='padding: 0 0.5em 0 0;'>ID: ${data.pokemonID}</h4>
+                                        <h3 style='padding: 0 0 0.5em;'>${data.name[0].toUpperCase() + data.name.slice(1)}</h3>
                                     </div>
         
                                     <div class='flex-break'></div>
-                                    <img src='https://pokeres.bastionbot.org/images/pokemon/${data.details.id}.png' style='width: 50%; padding: 1em 0 2em 0;'>
+                                    <img src='https://pokeres.bastionbot.org/images/pokemon/${data.pokemonID}.png' style='width: 50%; padding: 1em 0 2em 0;'>
                                     <div class='flex-break'></div>
         
                                     <table>
                                         <tr>
                                             <td>Types</td>
-                                            <td>${types}</td>
+                                            <td>${data.pokemonTypes}</td>
                                         </tr>
                                         <tr>
                                             <td>Weight</td>
-                                            <td>${(data.details.weight / 10).toFixed(2)} kg</td>
+                                            <td>${(data.weight).toFixed(2)} kg</td>
                                         </tr>
                                         <tr>
                                             <td>Height</td>
-                                            <td>${data.details.height * 10} cm</td>
+                                            <td>${data.height} cm</td>
                                         </tr>
                                         <tr>
                                             <td>Base experience</td>
-                                            <td>${data.details.base_experience}</td>
+                                            <td>${data.baseExperience}</td>
                                         </tr>
                                     </table>
                                     <div class='flex-break'></div>
@@ -242,7 +245,7 @@ function make_card_div(data) {
                                 <div style='display: flex; justify-content: center; flex-wrap: wrap;'>
                                     <h3 style='padding: 0 0 0.5em;'>${data.name[0].toUpperCase() + data.name.substring(1)}</h3>
                                     <div class='flex-break'></div>
-                                    <h5>Type: ${data.type[0].toUpperCase() + data.type.substring(1)}</h5>
+                                    <h5>Type: ${data.cardType[0].toUpperCase() + data.cardType.substring(1)}</h5>
                                 </div>
                                 <div class='flex-break'></div>
                                 <p>${data.details}</p>
@@ -293,6 +296,10 @@ document.addEventListener("DOMContentLoaded", (_) => {
         }
     });
 
+    document.querySelector("#remove-all-cards").addEventListener('click', (event) => {
+        remove_all_cards();
+    });
+    
     document.getElementById("card-name-create").focus();
     document.getElementById("card-name-create").select();
 
