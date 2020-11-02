@@ -6,7 +6,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokémon cards</title>
+    <title>Rock, paper, scissors!</title>
     <style>
 
         body {
@@ -27,15 +27,53 @@
             flex-wrap: wrap;
         }
 
+        .flex-center {
+            align-items: center;
+            justify-content: center;
+        }
+
         .input-card {
+            width: 18em;
             margin: 0.25em;
-            padding: 0.5em;
+            padding: 0.25em;
             border: 2px solid black;
             border-radius: 5px;
         }
 
         .input-card > button {
             width: 100%;
+        }
+
+        #choices-display {
+            text-align: center;
+            margin: 1em 0;
+        }
+
+        #choices-display th, td {
+            width: 9em;
+        }
+
+        #choices-display img {
+            width: 4em;
+        }
+
+        #choices-display #versus-img {
+            width: 3em;
+        }
+
+        #game-buttons > button {
+            padding: 1em;
+            margin: 1em;
+            border: 1px solid gray;
+            border-radius: 10px;
+        }
+
+        #game-buttons > button:hover {
+            cursor: pointer;
+        }
+
+        #game-buttons img {
+            width: 8em;
         }
 
         .pokemon-card {
@@ -66,84 +104,66 @@
 <body>
     
     <div id="title">
-        <h3>Pokémon cards</h3>
+        <h3>Rock, paper, scissors!</h3>
         <p>Mariano García Alipi - A00822247</p>
     </div>
 
     <!-- Actions -->
     <div class="flex">
-        <!-- Create card -->
+        <!-- Create game -->
         <div class="input-card">
-            <h4>Create card</h4>
-            
-            <label for="card-type">Type:</label>
-            <select name="card-type" id="card-type">
-                <option value="pokemon">Pokémon</option>
-                <option value="item">Item</option>
-                <option value="prize">Prize</option>
-                <option value="element">Element</option>
-            </select>
-            <div class="flex-break" style="margin-top: 1em;"></div>
+            <h4>Create game</h4>
 
-            <label for="card-name-create">Name:</label>
+            <label for="card-name-create">Nickname:</label>
             <input type="text" id="card-name-create" name="card-name-create">
-            <div class="flex-break" style="margin-top: 1em;"></div>
-            
-            <label for="card-details-create">Details:</label>
-            <textarea type="text" id="card-details-create" name="card-details-create"
-                style="resize: none" rows="3">
-            </textarea>
             <div class="flex-break" style="margin-top: 1em;"></div>
             
             <button id="create-card">Create</button>
         </div>
-        <!-- Get card -->
+        <!-- Join game -->
         <div class="input-card">
-            <h4>Get card <button id="getall-cards">Get all</button></h4>
+            <h4>Join game</h4>
+            
+            <label for="card-name-create">Nickname:</label>
+            <input type="text" id="card-name-create" name="card-name-create">
+            <div class="flex-break" style="margin-top: 1em;"></div>
 
-            <label for="card-name-get">Name:</label>
+            <label for="card-name-get">Game ID:</label>
             <input type="text" id="card-name-get" name="card-name-get">
             <div class="flex-break" style="margin-top: 1em;"></div>
 
-            <button id="get-card">Get</button>
-        </div>
-        <!-- Update card -->
-        <div class="input-card">
-            <h4>Update card</h4>
-
-            <label for="card-name-update">Name:</label>
-            <input type="text" id="card-name-update" name="card-name-update">
-            <div class="flex-break" style="margin-top: 1em;"></div>
-
-            <label for="card-details-update">Details:</label>
-            <textarea type="text" id="card-details-update" name="card-details-update"
-                style="resize: none" rows="3">
-            </textarea>
-            <div class="flex-break" style="margin-top: 1em;"></div>
-
-            <button id="update-card">Update</button>
-        </div>
-        <!-- Delete card -->
-        <div class="input-card">
-            <h4>Delete card <button id="deleteall-cards">Delete all</button></h4>
-
-            <label for="card-name-update">Name:</label>
-            <input type="text" id="card-name-delete" name="card-name-delete">
-            <div class="flex-break" style="margin-top: 1em;"></div>
-
-            <button id="delete-card">Delete</button>
+            <button id="get-card">Join</button>
         </div>
     </div>
     <hr/>
 
-    <!-- Remove all cards -->
-    <button id="remove-all-cards">Remove all</button>
+    <div class="flex flex-center" id="choices-display">
+        <table>
+            <thead>
+                <tr>
+                    <th>Your choice</th>
+                    <th></th>
+                    <th>Your opponent's<br>choice</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src="./img/question.png"></td>
+                    <td><img src="./img/versus.png" id="versus-img"></td>
+                    <td><img src="./img/question.png"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-    <div class="flex" id="pokemon-list">
-        
+    <div class="flex flex-center" id="game-buttons">
+        <button><img src="./img/rock.png"></button>
+        <button><img src="./img/paper.png"></button>
+        <button><img src="./img/scissors.png"></button>
     </div>
 
     <hr/>
+    Icons by <a href="https://www.flaticon.es/autores/freepik" title="Freepik">Freepik</a> and <a href="https://www.flaticon.com/authors/vectors-market" title="Vectors Market">Vectors Market</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
 
 </body>
 </html>
