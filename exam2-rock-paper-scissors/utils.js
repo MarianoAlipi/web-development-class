@@ -1,6 +1,22 @@
 let gameID = -1;
 let isHost = false;
 let gameState = null;
+let ended = false;
+
+const outcomes = {
+    'rock': {
+        'paper': false,
+        'scissors': true
+    },
+    'paper': {
+        'rock': true,
+        'scissors': false
+    },
+    'scissors': {
+        'rock': false,
+        'paper': true
+    }
+};
 
 // Handler for the 'create game' action.
 let create_game_handler = (_) => {
@@ -147,6 +163,11 @@ let get_game_state = () => {
         if (resp.status == 200) {
             gameState = resp.data;
             console.log("Received game state...");
+
+            if (gameState.hostChoice == null || gameState.guestChoice == null) {
+                ended = false;
+            }
+
             updateUI();
    
             setTimeout(function() {
@@ -183,17 +204,64 @@ let updateUI = () => {
     const hostChoice = (gameState.hostChoice == null) ? "question" : gameState.hostChoice;
     const guestChoice = (gameState.guestChoice == null) ? "question" : gameState.guestChoice;
 
+    
     if (isHost) {
-        document.querySelector("#your-choice").setAttribute("src", `./img/${hostChoice}.png`)
-        document.querySelector("#opponent-choice").setAttribute("src", (guestChoice == "question") ? "./img/question.png" : "./img/ready.png");
-    } else {
-        document.querySelector("#your-choice").setAttribute("src", `./img/${guestChoice}.png`)
-        document.querySelector("#opponent-choice").setAttribute("src", (hostChoice == "question") ? "./img/question.png" : "./img/ready.png");
-    }
+        
+        // Hide buttons.
+        if (hostChoice != "question") {
+        }
 
+        // Show choice.
+        document.querySelector("#your-choice").setAttribute("src", `./img/${hostChoice}.png`)
+        if (!ended) {
+            document.querySelector("#opponent-choice").setAttribute("src", (guestChoice == "question") ? "./img/question.png" : "./img/ready.png");
+        }
+    } else {
+
+        // Hide buttons.
+        if (guestChoice != "question") {
+        }
+
+        // Show choice.
+        document.querySelector("#your-choice").setAttribute("src", `./img/${guestChoice}.png`)
+        if (!ended) {
+            document.querySelector("#opponent-choice").setAttribute("src", (hostChoice == "question") ? "./img/question.png" : "./img/ready.png");
+        }
+    }
+    
     document.querySelector("#game-id").innerHTML = gameState.gameID;
     document.querySelector("#host-name").innerHTML = gameState.nicknameHost;
     document.querySelector("#guest-name").innerHTML = gameState.nicknameGuest;
+    
+    // If both players chose already, show the result.
+    if (hostChoice != "question" && guestChoice != "question") {
+
+        if (!ended) {
+            ended = true;
+        } else {
+            return;
+        }
+
+        if (isHost) {
+
+            document.querySelector("#opponent-choice").setAttribute("src", `./img/${guestChoice}.png`);
+
+            if (hostChoice == guestChoice) {
+                console.log("It's a draw!");
+            } else {
+                console.log (`You ${outcomes[hostChoice][guestChoice] ? "win" : "lose"}!`);
+            }
+        } else {
+            
+            document.querySelector("#opponent-choice").setAttribute("src", `./img/${hostChoice}.png`);
+            
+            if (hostChoice == guestChoice) {
+                console.log("It's a draw!");
+            } else {
+                console.log(`You ${outcomes[guestChoice][hostChoice] ? "win" : "lose"}!`);
+            }
+        }
+    }
 
 }
 

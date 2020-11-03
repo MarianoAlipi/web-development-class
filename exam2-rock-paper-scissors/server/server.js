@@ -61,7 +61,7 @@ db.once('open', function() {
         newGame.hostChoice = null;
         newGame.guestChoice = null;
 
-        console.log("Creating game with ID " + gameID + " for host '" + nickname + "'...");
+        console.log(`Game ID ${gameID}: creating game with for host '${nickname}'...`);
         
         // Save the game.
         newGame.save(function (err, result) {
@@ -88,7 +88,7 @@ db.once('open', function() {
         if (game != null) {
             
             if (game.nicknameGuest != null) {
-                console.log("Guest '" + nickname + "' tried to join a game that is already full (game ID: " + gameID + ").");
+                console.log(`Game ID ${gameID}: guest '${nickname}' tried to join a game that is already full.`);
                 res.status(403);
                 res.send("error:game_full");
                 return;
@@ -97,12 +97,12 @@ db.once('open', function() {
             game.nicknameGuest = nickname;
             game.save();
             
-            console.log(`Guest '${nickname}' joined '${game.nicknameHost}' game (game ID: ${gameID}).`);
+            console.log(`Game ID ${gameID}: guest '${nickname}' joined '${game.nicknameHost}'s game.`);
             res.status(200);
             res.send(game);
 
         } else {
-            console.log("Guest '" + nickname + "' tried to join a game that does not exist (game ID: " + gameID + ").");
+            console.log(`Game ID ${gameID}: guest '${nickname}' tried to join a game that does not exist.`);
             res.status(404);
             res.send("error:game_does_not_exist");
         }
@@ -122,10 +122,10 @@ db.once('open', function() {
             
             if (isHost) {
                 game.hostChoice = choice;
-                console.log("Host '" + game.nicknameHost + "' chose '" + choice + "' (game ID: " + gameID + ").");
+                console.log(`Game ID ${gameID}: host '${game.nicknameHost}' chose '${choice}'.`);
             } else {
                 game.guestChoice = choice;
-                console.log("Guest '" + game.nicknameGuest + "' chose '" + choice + "' (game ID: " + gameID + ").");
+                console.log(`Game ID ${gameID}: guest '${game.nicknameGuest}' chose '${choice}'.`);
             }
 
             game.save();
@@ -150,6 +150,16 @@ db.once('open', function() {
         if (game != null) {
             res.status(200);
             res.send(game);
+
+            // Game ended, clear choices after 3 seconds.
+            if (game.hostChoice != null && game.guestChoice != null) {
+                setTimeout(function() {
+                    game.hostChoice = null;
+                    game.guestChoice = null;
+                    game.save();
+                }, 3000);
+            }
+
         } else {
             res.status(404);
             res.send("error:game_does_not_exist");
