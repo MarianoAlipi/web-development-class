@@ -19,36 +19,41 @@ let create_game_handler = (_) => {
     }
 
     axios
-        .post(`http://localhost:8080/create/${nickname}`) 
-        .then(resp => {
+    .post(`http://localhost:8080/create/${nickname}`) 
+    .then(resp => {
 
-            if (resp.status == 201) {
-                gameID = resp.data;
-                isHost = true;
-                console.log("Game ID: " + gameID);
-                document.querySelector("#game-id").innerHTML = gameID;
-                document.querySelector("#host-name").innerHTML = nickname;
-                alert(`Game created succesfully with ID ${gameID}!`);
-            } else {
-                console.log(resp);
-            }
-            
-            return;
+        if (resp.status == 201) {
+            gameID = resp.data;
+            isHost = true;
+            console.log("Game ID: " + gameID);
+            document.querySelector("#game-id").innerHTML = gameID;
+            document.querySelector("#host-name").innerHTML = nickname;
+            //alert(`Game created succesfully with ID ${gameID}!`);
 
-        }).catch(function(error) {
-            if (error.response.status == 500) {
-                console.log(error);
-                alert(`The game could not be created.`);
-            } else {
-                console.log(error);
-                alert("An error ocurred.");
-            }
-        });
+            setTimeout(function() {
+                get_game_state()
+            }, 1000);
+
+        } else {
+            console.log(resp);
+        }
+        
+        return;
+
+    }).catch(function(error) {
+        if (error.response.status == 500) {
+            console.log(error);
+            alert(`The game could not be created.`);
+        } else {
+            console.log(error);
+            alert("An error ocurred.");
+        }
+    });
 }
-
+    
 // Handler for the 'join game' action.
 let join_game_handler = (_) => {
-
+    
     const nicknameField = document.getElementById("join-nickname");
     const gameIDField = document.getElementById("join-id");
     const nickname = nicknameField.value.trim();
@@ -59,7 +64,7 @@ let join_game_handler = (_) => {
         alert("Please enter a nickname.");
         return;
     }
-
+    
     if (gameIDToJoin === "") {
         alert("Please enter the ID of the game you want to join.");
         return;
@@ -68,7 +73,7 @@ let join_game_handler = (_) => {
     axios
     .get(`http://localhost:8080/join/${gameIDToJoin},${nickname}`)
     .then(resp => {
-
+        
         if (resp.status == 200) {
             gameState = resp.data;
             gameID = resp.data.gameID;
@@ -76,7 +81,12 @@ let join_game_handler = (_) => {
             document.querySelector("#game-id").innerHTML = gameID;
             document.querySelector("#host-name").innerHTML = resp.data.nicknameHost;
             document.querySelector("#guest-name").innerHTML = resp.data.nicknameGuest;
-            alert(`Joined ${resp.data.nicknameHost}'s game!`);
+            // alert(`Joined ${resp.data.nicknameHost}'s game!`);
+
+            setTimeout(function() {
+                get_game_state()
+            }, 1000);
+
         } else {
             alert("An error ocurred.");
         }
@@ -93,15 +103,19 @@ let join_game_handler = (_) => {
     });
 };
 
-let get_game_state = () => {
-
+// When the player clicks one of the options.
+let choice_buttons_handler = (e) => {
+    
     if (gameID == -1) {
         console.log("You are not currently in a game.");
         return;
     }
-
+    
+    const choice = e.target.value;
+    const request = `http://localhost:8080/choice/${gameID},${isHost},${choice}`;
+    
     axios
-    .get(`http://localhost:8080/getState/${gameID}`)
+    .post(request)
     .then(resp => {
         if (resp.status == 200) {
             gameState = resp.data;
@@ -116,14 +130,53 @@ let get_game_state = () => {
         } else {
             console.log(error);
         }
-    });
+    });   
+}
 
+// Get the current game state.
+let get_game_state = () => {
+    
+    if (gameID == -1) {
+        console.log("You are not currently in a game.");
+        return;
+    }
+    
+    axios
+    .get(`http://localhost:8080/getState/${gameID}`)
+    .then(resp => {
+        if (resp.status == 200) {
+            gameState = resp.data;
+            console.log("Received game state...");
+            updateUI();
+   
+            setTimeout(function() {
+                get_game_state()
+            }, 1000);
+            return true;
+
+        } else {
+            console.log("An error ocurred: ");
+            console.log(resp);
+            return false;
+        }
+    }).catch(function(error) {
+        alert("Lost connection! :(");
+        console.log(error);
+        return false;
+    });
+    
 };
 
+// Update the UI elements with the data of the current game state.
 let updateUI = () => {
 
     // Make sure the player is connected to a game...
     if (gameID == -1) {
+        document.querySelector("#your-choice").setAttribute("src", "./img/question.png");
+        document.querySelector("#opponent-choice").setAttribute("src", "./img/question.png");
+        document.querySelector("game-id").innerHTML = "-";
+        document.querySelector("#host-name").innerHTML = "-";
+        document.querySelector("#guest-name").innerHTML = "-";
         return;
     }
 
@@ -132,11 +185,15 @@ let updateUI = () => {
 
     if (isHost) {
         document.querySelector("#your-choice").setAttribute("src", `./img/${hostChoice}.png`)
-        document.querySelector("#opponent-choice").setAttribute("src", (guestChoice == "question") ? "../img/question.png" : "../img/ready.png");
+        document.querySelector("#opponent-choice").setAttribute("src", (guestChoice == "question") ? "./img/question.png" : "./img/ready.png");
     } else {
         document.querySelector("#your-choice").setAttribute("src", `./img/${guestChoice}.png`)
-        document.querySelector("#opponent-choice").setAttribute("src", (hostChoice == "question") ? "../img/question.png" : "../img/ready.png");
+        document.querySelector("#opponent-choice").setAttribute("src", (hostChoice == "question") ? "./img/question.png" : "./img/ready.png");
     }
+
+    document.querySelector("#game-id").innerHTML = gameState.gameID;
+    document.querySelector("#host-name").innerHTML = gameState.nicknameHost;
+    document.querySelector("#guest-name").innerHTML = gameState.nicknameGuest;
 
 }
 
@@ -161,6 +218,10 @@ document.addEventListener("DOMContentLoaded", (_) => {
         }
     });
     
+    document.querySelectorAll(".choice-btn").forEach(element => {
+        element.addEventListener('click', (event) => { choice_buttons_handler(event) });
+    });
+
     document.getElementById("create-nickname").focus();
     document.getElementById("create-nickname").select();
 

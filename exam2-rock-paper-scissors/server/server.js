@@ -22,7 +22,7 @@ db.on('error', console.error.bind(console, 'Connection error:'));
 // On success...
 db.once('open', function() {
     
-    console.log("Connected to MongoDB database.");
+    console.log("Connected to MongoDB database.\n");
 
     const gameSchema = new mongoose.Schema({
         // Games should be deleted when the host leaves so game IDs can be reused later.
@@ -109,8 +109,40 @@ db.once('open', function() {
         
     });
 
+    // Set a player's choice.
+    app.post('/choice/:gameID,:isHost,:choice', async (req, res) => {
+        
+        const gameID = req.params["gameID"];
+        const isHost = req.params["isHost"] == "true";
+        const choice = req.params["choice"];
+
+        const game = await Game.findOne({gameID}).exec();
+
+        if (game != null) {
+            
+            if (isHost) {
+                game.hostChoice = choice;
+                console.log("Host '" + game.nicknameHost + "' chose '" + choice + "' (game ID: " + gameID + ").");
+            } else {
+                game.guestChoice = choice;
+                console.log("Guest '" + game.nicknameGuest + "' chose '" + choice + "' (game ID: " + gameID + ").");
+            }
+
+            game.save();
+
+            res.status(200);
+            res.send(game);
+            return;
+            
+        } else {
+            res.status(404);
+            res.send("error:game_does_not_exist");
+        }
+
+    });
+
     // Get the current state of the game.
-    app.get('/getState/:gameID'), async (req, res) => {
+    app.get('/getState/:gameID', async (req, res) => {
 
         const gameID = req.params["gameID"];
         const game = await Game.findOne({gameID}).exec();
@@ -123,8 +155,8 @@ db.once('open', function() {
             res.send("error:game_does_not_exist");
         }
 
-    }
+    });
 
-    app.listen(port)
+    app.listen(port);
 
 }); // end of on successful connection to MongoDB
