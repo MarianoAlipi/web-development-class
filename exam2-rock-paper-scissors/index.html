@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Mariano García Alipi - A00822247 -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock, paper, scissors!</title>
+    <style>
+
+        body {
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+        #title {
+            display: flex;
+        }
+        
+        #title p {
+            flex-grow: 8;
+            text-align: right;
+        }
+
+        .flex {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .flex-center {
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input-card {
+            width: 18em;
+            margin: 0.25em;
+            padding: 0.25em;
+            border: 2px solid black;
+            border-radius: 5px;
+        }
+
+        .input-card > button {
+            width: 100%;
+        }
+
+        #choices-display {
+            text-align: center;
+            margin: 1em 0;
+        }
+
+        #choices-display th, td {
+            width: 9em;
+        }
+
+        #choices-display img {
+            width: 4em;
+        }
+
+        #choices-display #versus-img {
+            width: 3em;
+        }
+
+        #game-buttons > button {
+            padding: 1em;
+            margin: 1em;
+            border: 2px solid gray;
+            background-color: lightgray;
+            border-radius: 10px;
+        }
+
+        #game-buttons > button:hover {
+            cursor: pointer;
+            border: 2px solid darkslategrey;
+            background-color: lightgreen;
+        }
+
+        #game-buttons img {
+            width: 8em;
+        }
+
+        .pokemon-card {
+            width: 18em;
+            margin: 0.5em;
+            padding: 1em;
+            border: 2px solid black;
+            border-radius: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flex-break {
+            flex-basis: 100%;
+            height: 0;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./utils.js"></script>
+</head>
+
+<body>
+    
+    <div id="title">
+        <h3>Rock, paper, scissors!</h3>
+        <p>Mariano García Alipi - A00822247</p>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex">
+        <!-- Create game -->
+        <div class="input-card">
+            <h4>Create game</h4>
+
+            <label for="create-nickname">Nickname:</label>
+            <input type="text" id="create-nickname" name="create-nickname">
+            <div class="flex-break" style="margin-top: 1em;"></div>
+            
+            <button id="create-btn">Create</button>
+        </div>
+        <!-- Join game -->
+        <div class="input-card">
+            <h4>Join game</h4>
+            
+            <label for="join-nickname">Nickname:</label>
+            <input type="text" id="join-nickname" name="join-nickname">
+            <div class="flex-break" style="margin-top: 1em;"></div>
+
+            <label for="join-id">Game ID:</label>
+            <input type="text" id="join-id" name="join-id">
+            <div class="flex-break" style="margin-top: 1em;"></div>
+
+            <button id="join-btn">Join</button>
+        </div>
+        <!-- Game ID -->
+        <div class="input-card">
+            <table>
+                <tr style="height: 4em;">
+                    <td class="bold">Game ID:</td>
+                    <td id="game-id">-</td>
+                </tr>
+                <tr>
+                    <td class="bold">Host:</td>
+                    <td class="bold">Guest:</td>
+                </tr>
+                <tr>
+                    <td id="host-name">-</td>
+                    <td id="guest-name">-</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <hr/>
+
+    <div id="game-container">
+        <div class="flex flex-center" id="choices-display">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Your choice</th>
+                        <th></th>
+                        <th>Your opponent's<br>choice</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img src="./img/question.png"></td>
+                        <td><img src="./img/versus.png" id="versus-img"></td>
+                        <td><img src="./img/question.png"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flex flex-center" id="game-buttons">
+            <button id="rock-btn"><img src="./img/rock.png"></button>
+            <button id="paper-btn"><img src="./img/paper.png"></button>
+            <button id="scissors-btn"><img src="./img/scissors.png"></button>
+        </div>
+        
+        <hr/>
+        Icons by <a href="https://www.flaticon.es/autores/freepik" title="Freepik">Freepik</a> and <a href="https://www.flaticon.com/authors/vectors-market" title="Vectors Market">Vectors Market</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+    </div>
+
+</body>
+</html>
