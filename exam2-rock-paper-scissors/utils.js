@@ -105,6 +105,7 @@ let get_game_state = () => {
     .then(resp => {
         if (resp.status == 200) {
             gameState = resp.data;
+            updateUI();
         } else {
             console.log("An error ocurred: ");
             console.log(resp);
@@ -118,6 +119,26 @@ let get_game_state = () => {
     });
 
 };
+
+let updateUI = () => {
+
+    // Make sure the player is connected to a game...
+    if (gameID == -1) {
+        return;
+    }
+
+    const hostChoice = (gameState.hostChoice == null) ? "question" : gameState.hostChoice;
+    const guestChoice = (gameState.guestChoice == null) ? "question" : gameState.guestChoice;
+
+    if (isHost) {
+        document.querySelector("#your-choice").setAttribute("src", `./img/${hostChoice}.png`)
+        document.querySelector("#opponent-choice").setAttribute("src", (guestChoice == "question") ? "../img/question.png" : "../img/ready.png");
+    } else {
+        document.querySelector("#your-choice").setAttribute("src", `./img/${guestChoice}.png`)
+        document.querySelector("#opponent-choice").setAttribute("src", (hostChoice == "question") ? "../img/question.png" : "../img/ready.png");
+    }
+
+}
 
 // DOMContentLoaded wait until all dom is loaded, check the docs in below link
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event
