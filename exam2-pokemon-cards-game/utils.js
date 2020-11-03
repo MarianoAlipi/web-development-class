@@ -18,18 +18,21 @@ let create_game_handler = (_) => {
         .post(`http://localhost:8080/create/${nickname}`) 
         .then(resp => {
 
-            if (resp.data.includes("error")) {
-                if (resp.data == "error") {
-                    alert("The game could not be created.");
-                } else {
+            if (resp.status == 201) {
+                console.log("Game ID: " + resp.data);
+                alert(`Game created succesfully with ID ${resp.data}!`);
+            } else {
+                if (resp.status == 500) {
                     alert(`The game could not be created. (${resp.data})`);
+                } else {
+                    console.log(resp);
+                    alert("An error ocurred.");
                 }
-                return;
-            } else if (resp.data.includes("success")) {
-                alert("Game created succesfully!");
-                return;
+
             }
             
+            return;
+
         }).catch(function(error) {
             console.log(error);
             alert("There was an error creating the game.");
@@ -63,19 +66,25 @@ let join_game_handler = (_) => {
     .get(`http://localhost:8080/join/${gameID},${nickname}`)
     .then(resp => {
 
-            if (typeof(resp.data) === 'string' && resp.data.includes("error")) {
-                alert(`Could not join the game. (${resp.data})`);
-                return;
+        if (resp.status == 200) {
+            alert(`Joined ${resp.data.nicknameHost}'s game!`);
+        } else {
+            if (resp.status == 404) {
+                alert("The game does not exist.");
+            } else {
+                console.log(resp);
+                alert("An error ocurred.");
             }
+        }
 
-            /*
-                behavior
-            */
-            
-        }).catch(function(error) {
-            console.log(error);
-            alert("There was an error obtaining the data.");
-        });
+        /*
+            behavior
+        */
+        
+    }).catch(function(error) {
+        console.log(error);
+        alert("There was an error obtaining the data.");
+    });
 };
 
 // DOMContentLoaded wait until all dom is loaded, check the docs in below link

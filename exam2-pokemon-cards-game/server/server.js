@@ -14,7 +14,7 @@ app.use(cors())
 
 // Connect to MongoDB.
 console.log("Connecting to MongoDB database...");
-mongoose.connect('mongodb://localhost/exam2-rockPaperScissors', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost/exam2-rockPaperScissors', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true});
 const db = mongoose.connection;
 // On error...
 db.on('error', console.error.bind(console, 'Connection error:'));
@@ -67,11 +67,14 @@ db.once('open', function() {
         newGame.save(function (err, result) {
             if (err) {
                 console.log(err);
+                res.status(500);
+                res.send("error:could_not_create_game");
             } else {
                 console.log(result);
             }
         });
 
+        res.status(201);
         res.send(gameID);
     });
 
@@ -88,15 +91,32 @@ db.once('open', function() {
             game.nicknameGuest = nickname;
             game.save();
 
+            res.status(200);
             res.send(game);
 
         } else {
-            console.log("The game does not exist.");
+            console.log("Guest '" + nickname + "' tried to join a game that does not exist (game ID: " + gameID + ").");
             res.status(404);
             res.send("error:game_does_not_exist");
         }
         
     });
+
+    // Get the current state of the game.
+    app.get('/getState/:gameID'), async (req, res) => {
+
+        const gameID = req.params["gameID"];
+        const game = await Game.findOne({gameID}).exec();
+
+        if (game != null) {
+            res.status(200);
+            res.send(game);
+        } else {
+            res.status(404);
+            res.send("error:game_does_not_exist");
+        }
+
+    }
 
     app.listen(port)
 
