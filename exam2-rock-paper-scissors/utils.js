@@ -124,6 +124,7 @@ let choice_buttons_handler = (e) => {
     
     if (gameID == -1) {
         console.log("You are not currently in a game.");
+        updateUI();
         return;
     }
     
@@ -154,6 +155,7 @@ let get_game_state = () => {
     
     if (gameID == -1) {
         console.log("You are not currently in a game.");
+        updateUI();
         return;
     }
     
@@ -183,6 +185,9 @@ let get_game_state = () => {
     }).catch(function(error) {
         alert("Lost connection! :(");
         console.log(error);
+        gameID = -1;
+        gameState = null;
+        updateUI();
         return false;
     });
     
@@ -222,6 +227,9 @@ let update_player_status = (status) => {
     }).catch(function(error) {
         alert("Lost connection! :(");
         console.log(error);
+        gameID = -1;
+        gameState = null;
+        updateUI();
         return false;
     });
 
