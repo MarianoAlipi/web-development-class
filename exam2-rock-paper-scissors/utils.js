@@ -30,20 +30,19 @@ let create_game_handler = (_) => {
                 document.querySelector("#host-name").innerHTML = nickname;
                 alert(`Game created succesfully with ID ${gameID}!`);
             } else {
-                if (resp.status == 500) {
-                    alert(`The game could not be created. (${resp.data})`);
-                } else {
-                    console.log(resp);
-                    alert("An error ocurred.");
-                }
-
+                console.log(resp);
             }
             
             return;
 
         }).catch(function(error) {
-            console.log(error);
-            alert("There was an error creating the game.");
+            if (error.response.status == 500) {
+                console.log(error);
+                alert(`The game could not be created.`);
+            } else {
+                console.log(error);
+                alert("An error ocurred.");
+            }
         });
 }
 
@@ -92,6 +91,32 @@ let join_game_handler = (_) => {
             alert("An error ocurred.");
         }
     });
+};
+
+let get_game_state = () => {
+
+    if (gameID == -1) {
+        console.log("You are not currently in a game.");
+        return;
+    }
+
+    axios
+    .get(`http://localhost:8080/getState/${gameID}`)
+    .then(resp => {
+        if (resp.status == 200) {
+            gameState = resp.data;
+        } else {
+            console.log("An error ocurred: ");
+            console.log(resp);
+        }
+    }).catch(function(error) {
+        if (error.response.status == 404) {
+            alert("You are not currently in a game.");
+        } else {
+            console.log(error);
+        }
+    });
+
 };
 
 // DOMContentLoaded wait until all dom is loaded, check the docs in below link
