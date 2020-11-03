@@ -96,8 +96,8 @@
             height: 0;
         }
 
-        .remove-item {
-            margin: 0.75em 0 0 0;
+        .bold {
+            font-weight: bold;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -136,6 +136,23 @@
             <div class="flex-break" style="margin-top: 1em;"></div>
 
             <button id="join-btn">Join</button>
+        </div>
+        <!-- Game ID -->
+        <div class="input-card">
+            <table>
+                <tr style="height: 4em;">
+                    <td class="bold">Game ID:</td>
+                    <td id="game-id">-</td>
+                </tr>
+                <tr>
+                    <td class="bold">Host:</td>
+                    <td class="bold">Guest:</td>
+                </tr>
+                <tr>
+                    <td id="host-name">-</td>
+                    <td id="guest-name">-</td>
+                </tr>
+            </table>
         </div>
     </div>
     <hr/>

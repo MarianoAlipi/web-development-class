@@ -1,3 +1,7 @@
+let gameID = -1;
+let isHost = false;
+let gameState = null;
+
 // Handler for the 'create game' action.
 let create_game_handler = (_) => {
 
@@ -19,8 +23,12 @@ let create_game_handler = (_) => {
         .then(resp => {
 
             if (resp.status == 201) {
-                console.log("Game ID: " + resp.data);
-                alert(`Game created succesfully with ID ${resp.data}!`);
+                gameID = resp.data;
+                isHost = true;
+                console.log("Game ID: " + gameID);
+                document.querySelector("#game-id").innerHTML = gameID;
+                document.querySelector("#host-name").innerHTML = nickname;
+                alert(`Game created succesfully with ID ${gameID}!`);
             } else {
                 if (resp.status == 500) {
                     alert(`The game could not be created. (${resp.data})`);
@@ -45,7 +53,7 @@ let join_game_handler = (_) => {
     const nicknameField = document.getElementById("join-nickname");
     const gameIDField = document.getElementById("join-id");
     const nickname = nicknameField.value.trim();
-    const gameID = gameIDField.value.trim();
+    const gameIDToJoin = gameIDField.value.trim();
 
     nicknameField.value = "";
     nicknameField.focus();
@@ -57,29 +65,33 @@ let join_game_handler = (_) => {
         return;
     }
 
-    if (gameID === "") {
+    if (gameIDToJoin === "") {
         alert("Please enter the ID of the game you want to join.");
         return;
     }
     
     axios
-    .get(`http://localhost:8080/join/${gameID},${nickname}`)
+    .get(`http://localhost:8080/join/${gameIDToJoin},${nickname}`)
     .then(resp => {
 
         if (resp.status == 200) {
+            gameState = resp.data;
+            gameID = resp.data.gameID;
+            isHost = false;
+            document.querySelector("#game-id").innerHTML = gameID;
+            document.querySelector("#host-name").innerHTML = resp.data.nicknameHost;
+            document.querySelector("#guest-name").innerHTML = resp.data.nicknameGuest;
             alert(`Joined ${resp.data.nicknameHost}'s game!`);
         } else {
-            if (resp.status == 404) {
+            if (resp.status == 403) {
+                alert("The game is full!");
+            } else if (resp.status == 404) {
                 alert("The game does not exist.");
             } else {
                 console.log(resp);
                 alert("An error ocurred.");
             }
         }
-
-        /*
-            behavior
-        */
         
     }).catch(function(error) {
         console.log(error);

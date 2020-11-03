@@ -61,7 +61,7 @@ db.once('open', function() {
         newGame.hostChoice = null;
         newGame.guestChoice = null;
 
-        console.log("Creating game with ID " + gameID + "...");
+        console.log("Creating game with ID " + gameID + " for host '" + nickname + "'...");
         
         // Save the game.
         newGame.save(function (err, result) {
@@ -69,11 +69,10 @@ db.once('open', function() {
                 console.log(err);
                 res.status(500);
                 res.send("error:could_not_create_game");
-            } else {
-                console.log(result);
             }
         });
 
+        console.log("Success!\n");
         res.status(201);
         res.send(gameID);
     });
@@ -88,9 +87,17 @@ db.once('open', function() {
 
         if (game != null) {
             
+            if (game.nicknameGuest != null) {
+                console.log("Guest '" + nickname + "' tried to join a game that is already full (game ID: " + gameID + ").");
+                res.status(403);
+                res.send("error:game_full");
+                return;
+            }
+
             game.nicknameGuest = nickname;
             game.save();
-
+            
+            console.log(`Guest ${nickname} joined game ${gameID}.`);
             res.status(200);
             res.send(game);
 
