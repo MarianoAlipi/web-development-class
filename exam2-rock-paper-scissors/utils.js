@@ -188,6 +188,45 @@ let get_game_state = () => {
     
 };
 
+let update_player_status = (status) => {
+
+    if (gameID == -1) {
+        console.log("You are not currently in a game.");
+        return;
+    }
+
+    if (status != "ready" && status != "exit") {
+        console.log(`Invalid status ('${status}').`);
+        return;
+    }
+    
+    axios
+    .post(`http://localhost:8080/playerStatus/${gameID},${isHost},${status}`)
+    .then(resp => {
+        if (resp.status == 200) {
+
+            if (status == "ready") {
+                gameState = resp.data;
+                console.log("You're ready for next round! Received game state...");
+            } else if (status == "exit") {
+                gameID = -1;
+                gameState = null;
+            }
+            updateUI();
+
+        } else {
+            console.log("An error ocurred: ");
+            console.log(resp);
+            return false;
+        }
+    }).catch(function(error) {
+        alert("Lost connection! :(");
+        console.log(error);
+        return false;
+    });
+
+};
+
 // Update the UI elements with the data of the current game state.
 let updateUI = () => {
 
@@ -203,7 +242,6 @@ let updateUI = () => {
 
     const hostChoice = (gameState.hostChoice == null) ? "question" : gameState.hostChoice;
     const guestChoice = (gameState.guestChoice == null) ? "question" : gameState.guestChoice;
-
     
     if (isHost) {
         
@@ -271,13 +309,14 @@ let updateUI = () => {
         }).then((value) => {
             switch(value) {
                 case "playAgain":
-                    // reset game
+                    update_player_status("ready");
                     break;
                 case "exit":
+                    update_player_status("exit");
                     location.reload();
                     break;
                 default:
-                    // reset
+                    update_player_status("ready");
             }
         });
     }

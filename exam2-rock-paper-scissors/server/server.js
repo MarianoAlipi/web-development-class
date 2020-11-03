@@ -31,7 +31,9 @@ db.once('open', function() {
         nicknameHost: { type: String, required: true },
         nicknameGuest: { type: String },
         hostChoice: String,
-        guestChoice: String
+        guestChoice: String,
+        hostReady: Boolean,
+        guestReady: Boolean
     });
 
     const Game = mongoose.model('Game', gameSchema);
@@ -60,6 +62,8 @@ db.once('open', function() {
         newGame.nicknameGuest = null;
         newGame.hostChoice = null;
         newGame.guestChoice = null;
+        newGame.hostReady = false;
+        newGame.guestReady = false;
 
         console.log(`Game ID ${gameID}: creating game with for host '${nickname}'...`);
         
@@ -72,7 +76,6 @@ db.once('open', function() {
             }
         });
 
-        console.log("Success!\n");
         res.status(201);
         res.send(gameID);
     });
@@ -152,6 +155,7 @@ db.once('open', function() {
             res.send(game);
 
             // Game ended, clear choices after 3 seconds.
+            /*
             if (game.hostChoice != null && game.guestChoice != null) {
                 setTimeout(function() {
                     game.hostChoice = null;
@@ -159,12 +163,62 @@ db.once('open', function() {
                     game.save();
                 }, 3000);
             }
+            */
 
         } else {
             res.status(404);
             res.send("error:game_does_not_exist");
         }
 
+    });
+
+    // Update the state of the player (ready for next round, exit).
+    app.post(`/playerStatus/:gameID,:isHost,:status`, async (req, res) => {
+
+        const gameID = req.params["gameID"];
+        const isHost = req.params["isHost"] == "true";
+        const status = req.params["status"];
+        const game = await Game.findOne({gameID}).exec();
+
+        if (game != null) {
+
+            if (status == "ready") {
+                if (isHost) {
+                    game.hostReady = true;
+                } else {
+                    game.guestReady = true;
+                }
+
+                if (game.hostReady && game.guestReady) {
+                    game.hostReady = false;
+                    game.guestReady = false;
+                    game.hostChoice = null;
+                    game.guestChoice = null;
+                }
+
+            } else if (status == "exit") {
+                if (isHost) {
+                    game.deleteOne();
+                    res.status(200);
+                    res.send("player_left");
+                    return;
+                } else {
+                    game.nicknameGuest = null;
+                    game.hostReady = false;
+                    game.guestReady = false;
+                    game.hostChoice = null;
+                    game.guestChoice = null;
+                }
+            }
+
+            game.save();
+            res.status(200);
+            res.send(game);
+
+        } else {
+            res.status(404);
+            res.send("error:game_does_not_exist");
+        }
     });
 
     app.listen(port);
