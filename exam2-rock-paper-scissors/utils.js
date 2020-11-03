@@ -241,26 +241,45 @@ let updateUI = () => {
         } else {
             return;
         }
+        document.querySelector("#opponent-choice").setAttribute("src", `./img/${isHost ? guestChoice : hostChoice}.png`);
 
-        if (isHost) {
+        let playerResult = "";
 
-            document.querySelector("#opponent-choice").setAttribute("src", `./img/${guestChoice}.png`);
-
-            if (hostChoice == guestChoice) {
-                console.log("It's a draw!");
-            } else {
-                console.log (`You ${outcomes[hostChoice][guestChoice] ? "win" : "lose"}!`);
-            }
+        // Determine result (if not draw).
+        if (hostChoice == guestChoice) {
+            playerResult = "It's a draw!";
+        } else if (isHost) {
+            playerResult = `You ${outcomes[hostChoice][guestChoice] ? "win" : "lose"}!`;
         } else {
-            
-            document.querySelector("#opponent-choice").setAttribute("src", `./img/${hostChoice}.png`);
-            
-            if (hostChoice == guestChoice) {
-                console.log("It's a draw!");
-            } else {
-                console.log(`You ${outcomes[guestChoice][hostChoice] ? "win" : "lose"}!`);
-            }
+            playerResult = `You ${outcomes[guestChoice][hostChoice] ? "win" : "lose"}!`;
         }
+        console.log(playerResult);
+
+        swal({
+            title: playerResult,
+            icon: playerResult == "It's a draw!" ? "info" : (playerResult == "You win!" ? "success" : "error"),
+            buttons: {
+                playAgain: {
+                    text: "Play again",
+                    value: "playAgain"
+                },
+                back: {
+                    text: "Exit",
+                    value: "exit"
+                }
+            }
+        }).then((value) => {
+            switch(value) {
+                case "playAgain":
+                    // reset game
+                    break;
+                case "exit":
+                    location.reload();
+                    break;
+                default:
+                    // reset
+            }
+        });
     }
 
 }
