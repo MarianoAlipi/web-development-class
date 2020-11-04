@@ -46,7 +46,8 @@ db.once('open', function() {
         
         let newGame = new Game();
 
-        const nickname = req.params["nickname"];
+        // Limit to 20 characters.
+        const nickname = req.params["nickname"].substring(0, 20);
         
         // Generate a valid and unique game ID.
         let gameID = "";
@@ -84,7 +85,8 @@ db.once('open', function() {
     app.get('/join/:gameID,:nickname', async (req, res) => {
         
         const gameID = req.params["gameID"];
-        const nickname = req.params["nickname"];
+        // Limit name to 20 characters.
+        const nickname = req.params["nickname"].substring(0, 20);;
 
         const game = await Game.findOne({gameID}).exec();
 

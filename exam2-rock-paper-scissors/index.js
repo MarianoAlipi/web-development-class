@@ -44,6 +44,7 @@ let create_game_handler = (_) => {
             isHost = true;
             console.log("Game ID: " + gameID);
             updateUI();
+            $('.toast').toast('show');
             //alert(`Game created succesfully with ID ${gameID}!`);
 
             setTimeout(function() {
@@ -312,17 +313,14 @@ let updateUI = () => {
                     text: "Play again",
                     value: "playAgain"
                 },
-                back: {
-                    text: "Exit",
-                    value: "exit"
-                }
+               cancel: "Leave" // has null as value
             }
         }).then((value) => {
             switch(value) {
                 case "playAgain":
                     update_player_status("ready");
                     break;
-                case "exit":
+                case null:
                     update_player_status("exit");
                     location.reload();
                     break;
