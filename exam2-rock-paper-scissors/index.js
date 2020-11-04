@@ -360,6 +360,14 @@ document.addEventListener("DOMContentLoaded", (_) => {
         element.addEventListener('click', (event) => { choice_buttons_handler(event) });
     });
 
+    // This fixes a problem that makes (invisible) toasts be on top of everything.
+    $(".toast").on("show.bs.toast", function() {
+        $(this).removeClass("d-none");
+    });
+    $(".toast").on("hide.bs.toast", function() {
+        $(this).addClass("d-none");
+    });
+
     document.getElementById("create-nickname").focus();
     document.getElementById("create-nickname").select();
 
