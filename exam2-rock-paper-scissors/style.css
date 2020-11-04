@@ -1,5 +1,11 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 body {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding-bottom: 35px;
 }
 
 .navbar {
@@ -8,17 +14,67 @@ body {
     margin-bottom: 0.5em;
 }
 
+.footer {
+    background-color: #222;
+    color: white;
+    position: absolute;
+    padding: 0.5em;
+    bottom: 0;
+    margin: 0;
+    width: 100%;
+    height: 35px;
+    line-height: 20px;
+}
+
+/*
+    xs: 0 - 767 px
+    sm: 768 - 991 px
+    md: 992 - 1199 px
+    lg: 1200 px +
+*/
+/* Phones */
+@media (max-width: 768px) {
+
+    body {
+        padding-bottom: 100px;
+    }
+
+    .navbar-brand {
+        font-size: 1.1em;
+    }
+
+    .footer {
+        height: 100px;
+    }
+}
+/* Tablets, desktops + */
+@media (min-width: 768px) {
+    
+    body {
+        padding-bottom: 35px;
+    }
+    
+    .navbar-brand {
+        font-size: 1.5em;
+    }
+
+    .footer {
+        height: 35px;
+    }
+}
+
+
 .navbar span {
     margin: 0;
     padding: 0;
 }
 
 nav #nav-game-id-label {
-    font-size: 1em;
+    font-size: 1.25em;
 }
 
 nav #nav-game-id {
-    font-size: 1.5em;
+    font-size: 1.25em;
     background-color: #333;
     border-radius: 10px;
     padding: 2px;
