@@ -292,9 +292,9 @@ let updateUI = () => {
 
         let playerResult = "";
 
-        // Determine result (if not draw).
+        // Determine result (if not a tie).
         if (hostChoice == guestChoice) {
-            playerResult = "It's a draw!";
+            playerResult = "It's a tie!";
         } else if (isHost) {
             playerResult = `You ${outcomes[hostChoice][guestChoice] ? "win" : "lose"}!`;
         } else {
@@ -302,9 +302,11 @@ let updateUI = () => {
         }
         console.log(playerResult);
 
+        // Sweet Alert with the result.
         swal({
             title: playerResult,
-            icon: playerResult == "It's a draw!" ? "info" : (playerResult == "You win!" ? "success" : "error"),
+            icon: playerResult == "It's a tie!" ? "./img/equal.png" : (playerResult == "You win!" ? "./img/crown.png" : "./img/letter-l.png"),
+            content: "<img src='./img/ready.png'>",
             buttons: {
                 playAgain: {
                     text: "Play again",
