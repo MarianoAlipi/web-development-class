@@ -3,6 +3,9 @@ let isHost = false;
 let gameState = null;
 let ended = false;
 
+const ADDRESS = "localhost";
+const PORT = "8080";
+
 const outcomes = {
     'rock': {
         'paper': false,
@@ -35,7 +38,7 @@ let create_game_handler = (_) => {
     }
 
     axios
-    .post(`http://localhost:8080/create/${nickname}`) 
+    .post(`http://${ADDRESS}:${PORT}/create/${nickname}`) 
     .then(resp => {
 
         if (resp.status == 201) {
@@ -89,7 +92,7 @@ let join_game_handler = (_) => {
     }
     
     axios
-    .get(`http://localhost:8080/join/${gameIDToJoin},${nickname}`)
+    .get(`http://${ADDRESS}:${PORT}/join/${gameIDToJoin},${nickname}`)
     .then(resp => {
         
         if (resp.status == 200) {
@@ -129,7 +132,7 @@ let choice_buttons_handler = (e) => {
     }
     
     const choice = e.target.value;
-    const request = `http://localhost:8080/choice/${gameID},${isHost},${choice}`;
+    const request = `http://${ADDRESS}:${PORT}/choice/${gameID},${isHost},${choice}`;
     
     axios
     .post(request)
@@ -160,7 +163,7 @@ let get_game_state = () => {
     }
     
     axios
-    .get(`http://localhost:8080/getState/${gameID}`)
+    .get(`http://${ADDRESS}:${PORT}/getState/${gameID}`)
     .then(resp => {
         if (resp.status == 200) {
             gameState = resp.data;
@@ -206,7 +209,7 @@ let update_player_status = (status) => {
     }
     
     axios
-    .post(`http://localhost:8080/playerStatus/${gameID},${isHost},${status}`)
+    .post(`http://${ADDRESS}:${PORT}/playerStatus/${gameID},${isHost},${status}`)
     .then(resp => {
         if (resp.status == 200) {
 
