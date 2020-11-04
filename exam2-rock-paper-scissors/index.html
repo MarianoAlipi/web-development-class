@@ -7,19 +7,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock, paper, scissors!</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <style>
 
         body {
             font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
         }
 
-        #title {
-            display: flex;
+        .navbar {
+            background-color: #222;
+            color: white;
+            margin-bottom: 0.5em;
         }
-        
-        #title p {
-            flex-grow: 8;
-            text-align: right;
+
+        .navbar span {
+            margin: 0;
+            padding: 0;
+        }
+
+        nav #nav-game-id-label {
+            font-size: 1em;
+        }
+
+        nav #nav-game-id {
+            font-size: 1.5em;
+            background-color: #333;
+            border-radius: 10px;
+            padding: 2px;
         }
 
         .flex {
@@ -106,93 +125,104 @@
 </head>
 
 <body>
+
+    <!-- Navbar / header -->
+    <nav id="title" class="navbar">
+        <span class="navbar-brand">Rock, paper, scissors!</span>
+        <span id="nav-game-id-label" class="navbar-text">Game ID: <span id="nav-game-id" class="navbar-text">&nbsp;-&nbsp;</span></span>
+        <span class="navbar-text d-none d-md-inline">Mariano García Alipi - A00822247</span>
+    </nav>
     
-    <div id="title">
-        <h3>Rock, paper, scissors!</h3>
-        <p>Mariano García Alipi - A00822247</p>
-    </div>
+    <div class="row container">
 
-    <!-- Actions -->
-    <div class="flex">
-        <!-- Create game -->
-        <div class="input-card">
-            <h4>Create game</h4>
+        <!-- Actions -->
+        <div class="flex">
+            <!-- Create game -->
+            <div class="input-card">
+                <h4>Create game</h4>
 
-            <label for="create-nickname">Nickname:</label>
-            <input type="text" id="create-nickname" name="create-nickname">
-            <div class="flex-break" style="margin-top: 1em;"></div>
-            
-            <button id="create-btn">Create</button>
-        </div>
-        <!-- Join game -->
-        <div class="input-card">
-            <h4>Join game</h4>
-            
-            <label for="join-nickname">Nickname:</label>
-            <input type="text" id="join-nickname" name="join-nickname">
-            <div class="flex-break" style="margin-top: 1em;"></div>
+                <label for="create-nickname">Nickname:</label>
+                <input type="text" id="create-nickname" name="create-nickname">
+                <div class="flex-break" style="margin-top: 1em;"></div>
+                
+                <button id="create-btn">Create</button>
+            </div>
+            <!-- Join game -->
+            <div class="input-card">
+                <h4>Join game</h4>
+                
+                <label for="join-nickname">Nickname:</label>
+                <input type="text" id="join-nickname" name="join-nickname">
+                <div class="flex-break" style="margin-top: 1em;"></div>
 
-            <label for="join-id">Game ID:</label>
-            <input type="text" id="join-id" name="join-id">
-            <div class="flex-break" style="margin-top: 1em;"></div>
+                <label for="join-id">Game ID:</label>
+                <input type="text" id="join-id" name="join-id">
+                <div class="flex-break" style="margin-top: 1em;"></div>
 
-            <button id="join-btn">Join</button>
-        </div>
-        <!-- Game ID -->
-        <div class="input-card">
-            <table>
-                <tr style="height: 4em;">
-                    <td class="bold">Game ID:</td>
-                    <td id="game-id">-</td>
-                </tr>
-                <tr>
-                    <td class="bold">Host:</td>
-                    <td class="bold">Guest:</td>
-                </tr>
-                <tr>
-                    <td id="host-name">-</td>
-                    <td id="guest-name">-</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <hr/>
-
-    <div id="game-container">
-        <div class="flex flex-center" id="choices-display">
-            <!-- Main game table -->
-            <table>
-                <thead>
-                    <tr>
-                        <th>Your choice</th>
-                        <th></th>
-                        <th>Your opponent's<br>choice</th>
+                <button id="join-btn">Join</button>
+            </div>
+            <!-- Game ID -->
+            <div class="input-card">
+                <table>
+                    <tr style="height: 4em;">
+                        <td class="bold">Game ID:</td>
+                        <td id="game-id">-</td>
                     </tr>
-                </thead>
-                <tbody>
                     <tr>
-                        <td><img id="your-choice" src="./img/question.png"></td>
-                        <td><img src="./img/versus.png" id="versus-img"></td>
-                        <td><img id="opponent-choice" src="./img/question.png"></td>
+                        <td class="bold">Host:</td>
+                        <td class="bold">Guest:</td>
                     </tr>
-                </tbody>
-            </table>
+                    <tr>
+                        <td id="host-name">-</td>
+                        <td id="guest-name">-</td>
+                    </tr>
+                </table>
+            </div>
         </div>
-
-        <div class="flex flex-center" id="game-buttons">
-            <button id="rock-btn" class="choice-btn" value="rock"><img src="./img/rock.png"></button>
-            <button id="paper-btn" class="choice-btn" value="paper"><img src="./img/paper.png"></button>
-            <button id="scissors-btn" class="choice-btn" value="scissors"><img src="./img/scissors.png"></button>
-        </div>
-        
         <hr/>
-        Icons by <a href="https://www.flaticon.es/autores/freepik" title="Freepik">Freepik</a>,
-        <a href="https://www.flaticon.com/authors/vectors-market" title="Vectors Market">Vectors Market</a> and
-        <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from
-        <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+
+        <div id="game-container">
+            <div class="flex flex-center" id="choices-display">
+                <!-- Main game table -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Your choice</th>
+                            <th></th>
+                            <th>Your opponent's<br>choice</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img id="your-choice" src="./img/question.png"></td>
+                            <td><img src="./img/versus.png" id="versus-img"></td>
+                            <td><img id="opponent-choice" src="./img/question.png"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="flex flex-center" id="game-buttons">
+                <button id="rock-btn" class="choice-btn" value="rock"><img src="./img/rock.png"></button>
+                <button id="paper-btn" class="choice-btn" value="paper"><img src="./img/paper.png"></button>
+                <button id="scissors-btn" class="choice-btn" value="scissors"><img src="./img/scissors.png"></button>
+            </div>
+            
+            <hr/>
+            Icons by <a href="https://www.flaticon.es/autores/freepik" title="Freepik">Freepik</a>,
+            <a href="https://www.flaticon.com/authors/vectors-market" title="Vectors Market">Vectors Market</a> and
+            <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from
+            <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+        </div>
+
     </div>
 
     <!-- Sweet alerts -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+
 </body>
 </html>

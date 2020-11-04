@@ -77,7 +77,7 @@ db.once('open', function() {
         });
 
         res.status(201);
-        res.send(gameID);
+        res.send(newGame);
     });
 
     // Join game.

@@ -39,11 +39,11 @@ let create_game_handler = (_) => {
     .then(resp => {
 
         if (resp.status == 201) {
-            gameID = resp.data;
+            gameState = resp.data;
+            gameID = gameState.gameID;
             isHost = true;
             console.log("Game ID: " + gameID);
-            document.querySelector("#game-id").innerHTML = gameID;
-            document.querySelector("#host-name").innerHTML = nickname;
+            updateUI();
             //alert(`Game created succesfully with ID ${gameID}!`);
 
             setTimeout(function() {
@@ -57,13 +57,14 @@ let create_game_handler = (_) => {
         return;
 
     }).catch(function(error) {
+        /*
         if (error.response.status == 500) {
             console.log(error);
             alert(`The game could not be created.`);
-        } else {
+        } else {*/
             console.log(error);
             alert("An error ocurred.");
-        }
+        // }
     });
 }
     
@@ -94,9 +95,7 @@ let join_game_handler = (_) => {
             gameState = resp.data;
             gameID = resp.data.gameID;
             isHost = false;
-            document.querySelector("#game-id").innerHTML = gameID;
-            document.querySelector("#host-name").innerHTML = resp.data.nicknameHost;
-            document.querySelector("#guest-name").innerHTML = resp.data.nicknameGuest;
+            updateUI();
             // alert(`Joined ${resp.data.nicknameHost}'s game!`);
 
             setTimeout(function() {
@@ -242,12 +241,13 @@ let updateUI = () => {
     if (gameID == -1) {
         document.querySelector("#your-choice").setAttribute("src", "./img/question.png");
         document.querySelector("#opponent-choice").setAttribute("src", "./img/question.png");
-        document.querySelector("game-id").innerHTML = "-";
+        document.querySelector("#game-id").innerHTML = "-";
+        document.querySelector("#nav-game-id").innerHTML = "&nbsp;-&nbsp;";
         document.querySelector("#host-name").innerHTML = "-";
         document.querySelector("#guest-name").innerHTML = "-";
         return;
     }
-
+    
     const hostChoice = (gameState.hostChoice == null) ? "question" : gameState.hostChoice;
     const guestChoice = (gameState.guestChoice == null) ? "question" : gameState.guestChoice;
     
@@ -256,18 +256,18 @@ let updateUI = () => {
         // Hide buttons.
         if (hostChoice != "question") {
         }
-
+        
         // Show choice.
         document.querySelector("#your-choice").setAttribute("src", `./img/${hostChoice}.png`)
         if (!ended) {
             document.querySelector("#opponent-choice").setAttribute("src", (guestChoice == "question") ? "./img/question.png" : "./img/ready.png");
         }
     } else {
-
+        
         // Hide buttons.
         if (guestChoice != "question") {
         }
-
+        
         // Show choice.
         document.querySelector("#your-choice").setAttribute("src", `./img/${guestChoice}.png`)
         if (!ended) {
@@ -276,12 +276,13 @@ let updateUI = () => {
     }
     
     document.querySelector("#game-id").innerHTML = gameState.gameID;
+    document.querySelector("#nav-game-id").innerHTML = gameState.gameID;
     document.querySelector("#host-name").innerHTML = gameState.nicknameHost;
     document.querySelector("#guest-name").innerHTML = gameState.nicknameGuest;
     
     // If both players chose already, show the result.
     if (hostChoice != "question" && guestChoice != "question") {
-
+        
         if (!ended) {
             ended = true;
         } else {
