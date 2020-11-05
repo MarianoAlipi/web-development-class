@@ -42,8 +42,9 @@ let create_game_handler = (_) => {
     nicknameField.select();
 
     // If the field is empty, cancel.
-    if (nickname === "") {
-        alert("Please enter a nickname.");
+    if (nickname.length == 0) {
+        nicknameField.classList.add("is-invalid");
+        nicknameField.setAttribute("placeholder", "Enter a nickname");
         return;
     }
 
@@ -83,16 +84,18 @@ let join_game_handler = (_) => {
     const gameIDToJoin = gameIDField.value.trim();
     
     // If the fields are empty, cancel.
-    if (nickname === "") {
-        alert("Please enter a nickname.");
-        return;
+    if (nickname.length == 0) {
+        nicknameField.classList.add("is-invalid");
+        nicknameField.setAttribute("placeholder", "Enter a nickname");
     }
     
-    if (gameIDToJoin === "") {
-        alert("Please enter the ID of the game you want to join.");
-        return;
+    if (gameIDToJoin.length == 0) {
+        gameIDField.classList.add("is-invalid");
     } else if (gameIDToJoin.length != 4) {
-        alert("Please enter a valid game ID.");
+        gameIDField.classList.add("is-invalid");
+    }
+
+    if (nickname.length == 0 || gameIDToJoin.length == 0) {
         return;
     }
     
@@ -119,17 +122,35 @@ let join_game_handler = (_) => {
             }, 1000);
 
         } else {
-            alert("An error ocurred.");
+            console.log("An error ocurred.");
         }
         
     }).catch(function(error) {
         if (error.response.status == 403) {
-            alert("The game is full!");
+            swal({
+                title: "The game is full!",
+                icon: "error",
+                text: "There's no room for you... 😶",
+                buttons: false,
+                timer: 2500
+            });
         } else if (error.response.status == 404) {
-            alert("The game does not exist.");
+            swal({
+                title: "The game does not exist!",
+                icon: "error",
+                text: "Is the game ID correct? 🤔",
+                buttons: false,
+                timer: 2000
+            });
         } else {
             console.log(error);
-            alert("An error ocurred.");
+            swal({
+                title: "An error ocurred.",
+                icon: "error",
+                text: "Check the browser console for more information.",
+                buttons: false,
+                timer: 2500
+            });
         }
     });
 };
@@ -157,11 +178,8 @@ let choice_buttons_handler = (e) => {
             console.log(resp);
         }
     }).catch(function(error) {
-        if (error.response.status == 404) {
-            alert("You are not currently in a game.");
-        } else {
-            console.log(error);
-        }
+        console.log("An error ocurred: ");
+        console.log(error);
     });   
 }
 
@@ -259,7 +277,7 @@ let update_player_status = (status) => {
         }
     }).catch(function(error) {
         console.log(error);
-        alert("Lost connection! :(");
+        console.log("Lost connection! :(");
         gameID = -1;
         gameState = null;
         updateUI();
@@ -442,6 +460,9 @@ let updateUI = () => {
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event
 document.addEventListener("DOMContentLoaded", (_) => {
     
+    const createNicknameField = document.querySelector("#create-nickname");
+    const joinNicknameField = document.querySelector("#join-nickname");
+
     // The buttons' behavior.
     document.querySelector('#create-btn').addEventListener('click', (event) => { create_game_handler() });
     document.querySelector('#join-btn').addEventListener('click', (event) => { join_game_handler() });
@@ -457,6 +478,26 @@ document.addEventListener("DOMContentLoaded", (_) => {
         if (event.keyCode === 13) {
             document.querySelector("#join-btn").click();
         }
+    });
+
+    // Remove the 'invalid' style when the user types something.
+    document.querySelector("#create-nickname").addEventListener('input', (event) => {
+        event.target.classList.remove("is-invalid");
+        createNicknameField.setAttribute("placeholder", "");
+    });
+    
+    document.querySelector("#join-nickname").addEventListener('input', (event) => {
+        event.target.classList.remove("is-invalid");
+        joinNicknameField.setAttribute("placeholder", "");
+    });
+
+    document.querySelector("#join-id").addEventListener('input', (event) => {
+        // Regex to remove all non-digit characters.
+        let value = event.target.value.trim().replace(/[^0-9]/g, '');
+        // Keep only four characters.
+        event.target.value = value.substring(0, 4);
+        // Remove 'invalid' style.
+        event.target.classList.remove("is-invalid");
     });
 
     document.querySelectorAll(".leave-btn").forEach(element => {
