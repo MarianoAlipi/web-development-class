@@ -249,9 +249,14 @@ let updateUI = () => {
         document.querySelector("#nav-game-id").innerHTML = "&nbsp;-&nbsp;";
         document.querySelector("#host-name").innerHTML = "-";
         document.querySelector("#guest-name").innerHTML = "-";
+        $("#game-container").fadeOut();
+        document.querySelector("#game-container").classList.add("d-none");
         return;
     }
     
+    $("#game-container").fadeIn();
+    document.querySelector("#game-container").classList.remove("d-none");
+
     const hostChoice = (gameState.hostChoice == null) ? "question" : gameState.hostChoice;
     const guestChoice = (gameState.guestChoice == null) ? "question" : gameState.guestChoice;
     
