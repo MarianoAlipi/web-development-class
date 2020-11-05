@@ -265,11 +265,13 @@ let updateUI = () => {
         document.querySelector("#nav-game-id").innerHTML = "&nbsp;-&nbsp;";
         document.querySelector("#host-name").innerHTML = "-";
         document.querySelector("#guest-name").innerHTML = "-";
-        $("#game-container").fadeOut();
         document.querySelector("#game-container").classList.add("d-none");
+        document.querySelector("#forms-area").classList.remove("d-none");
         return;
     }
     
+    $("#forms-area").fadeOut();
+    document.querySelector("#forms-area").classList.add("d-none");
     $("#game-container").fadeIn();
     document.querySelector("#game-container").classList.remove("d-none");
 
