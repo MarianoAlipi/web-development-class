@@ -7,7 +7,7 @@ let ended = false;
 // 'play again' or to leave.
 let waitingToRestart = false;
 
-const ADDRESS = "localhost";
+const ADDRESS = "192.168.1.71";
 const PORT = "8080";
 
 const outcomes = {
@@ -237,6 +237,7 @@ let update_player_status = (status) => {
                 gameState = null;
             }
             updateUI();
+            location.reload();
 
         } else {
             console.log("An error ocurred: ");
@@ -329,7 +330,6 @@ let updateUI = () => {
                     switch(value) {
                         case "leave":
                             update_player_status("exit");
-                            location.reload();
                             break;
                         default:
                             break;
@@ -415,6 +415,12 @@ document.addEventListener("DOMContentLoaded", (_) => {
         if (event.keyCode === 13) {
             document.querySelector("#join-btn").click();
         }
+    });
+
+    document.querySelectorAll(".leave-btn").forEach(element => {
+        element.addEventListener('click', (event) => {
+            update_player_status("exit");
+        });
     });
     
     document.querySelectorAll(".choice-btn").forEach(element => {

@@ -103,7 +103,7 @@
 
             <!-- Toast -->
             
-            <div class="toast d-none" data-autohide="false">
+            <div class="toast d-none" data-delay="3000" data-autohide="true">
                 <div class="toast-header">
                     <strong class="mr-auto">Message</strong>
                     <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
@@ -115,7 +115,7 @@
                 </div>
             </div>
 
-            <div class="toast d-none" data-autohide="false">
+            <div class="toast d-none" data-delay="3000" data-autohide="true">
                 <div class="toast-header">
                 <strong class="mr-auto">Message</strong>
                 <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
@@ -133,6 +133,10 @@
 
         <!-- Game container -->
         <div id="game-container" class="d-none">
+
+            <!-- Leave button on desktop -->
+            <button class="leave-btn btn btn-danger col-sm-1 d-none d-sm-block">Leave</button>
+
             <div class="flex flex-center" id="choices-display">
                 <!-- Main game table -->
                 <table>
@@ -157,7 +161,10 @@
                 <button id="rock-btn" class="choice-btn" value="rock"><img src="./img/rock.png"></button>
                 <button id="paper-btn" class="choice-btn" value="paper"><img src="./img/paper.png"></button>
                 <button id="scissors-btn" class="choice-btn" value="scissors"><img src="./img/scissors.png"></button>
-            </div>           
+            </div>
+
+            <!-- Leave button on mobile devices -->
+            <button class="leave-btn btn btn-danger col-12 d-block d-sm-none mb-3">Leave</button>
             
         </div>
         
@@ -180,7 +187,7 @@
             </div>
             
             <div class="col-12 col-sm-4 col-lg-4">
-                <span class="text-right d-block">Mariano García Alipi - A00822247</span>
+                <span class="text-right d-block">Mariano García Alipi — A00822247</span>
             </div>
 
         </div> <!-- end of container row -->
