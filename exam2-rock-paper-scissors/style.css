@@ -34,6 +34,7 @@ input[type="number"] {
     text-align: center;
 }
 
+/* Remove the arrows in the number input. */
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -45,44 +46,6 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
 }
-
-/*
-    xs: 0 - 767 px
-    sm: 768 - 991 px
-    md: 992 - 1199 px
-    lg: 1200 px +
-*/
-/* Phones */
-@media (max-width: 768px) {
-
-    body {
-        padding-bottom: 100px;
-    }
-
-    .navbar-brand {
-        font-size: 1.1em;
-    }
-
-    .footer {
-        height: 100px;
-    }
-}
-/* Tablets, desktops + */
-@media (min-width: 768px) {
-    
-    body {
-        padding-bottom: 35px;
-    }
-    
-    .navbar-brand {
-        font-size: 1.5em;
-    }
-
-    .footer {
-        height: 35px;
-    }
-}
-
 
 .navbar span {
     margin: 0;
@@ -108,14 +71,6 @@ nav #nav-game-id {
 .flex-center {
     align-items: center;
     justify-content: center;
-}
-
-.input-card {
-    width: 18em;
-    margin: 0.25em;
-    padding: 0.25em;
-    border: 2px solid black;
-    border-radius: 5px;
 }
 
 #choices-display {
@@ -157,4 +112,46 @@ nav #nav-game-id {
 .flex-break {
     flex-basis: 100%;
     height: 0;
+}
+
+/*
+    xs: 0 - 767 px
+    sm: 768 - 991 px
+    md: 992 - 1199 px
+    lg: 1200 px +
+*/
+/* Phones */
+@media (max-width: 768px) {
+
+    body {
+        padding-bottom: 100px;
+    }
+
+    .navbar-brand {
+        font-size: 1.1em;
+    }
+
+    .footer {
+        height: 100px;
+    }
+}
+/* Tablets, desktops + */
+@media (min-width: 768px) {
+    
+    body {
+        padding-bottom: 35px;
+    }
+    
+    .navbar-brand {
+        font-size: 1.5em;
+    }
+
+    .footer {
+        height: 35px;
+    }
+
+    .game-info {
+        float: right;
+        text-align: right;
+    }
 }

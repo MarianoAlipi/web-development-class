@@ -291,7 +291,10 @@ let updateUI = () => {
     const guestChoice = (gameState.guestChoice == null) ? "question" : gameState.guestChoice;
     
     if (isHost) {
-        
+
+        document.querySelector("#you-host").classList.remove("d-none");
+        document.querySelector("#you-guest").classList.add("d-none");
+
         // Hide buttons.
         if (hostChoice != "question") {
         }
@@ -315,6 +318,9 @@ let updateUI = () => {
 
     } else {
         
+        document.querySelector("#you-host").classList.add("d-none");
+        document.querySelector("#you-guest").classList.remove("d-none");
+
         // Hide buttons.
         if (guestChoice != "question") {
         }

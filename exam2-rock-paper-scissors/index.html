@@ -30,6 +30,7 @@
         <span id="nav-game-id-label">Game ID: <span id="nav-game-id" class="m-0 p-0">&nbsp;-&nbsp;</span></span>
     </nav>
     
+    <!-- Main content wrapper -->
     <div class="container mw-100">
 
         <!-- Actions -->
@@ -38,19 +39,21 @@
             <!-- Create game -->
             <div class="col-12 col-sm-5 col-md-5 col-lg-4 col-xl-3">
                 <div class="card">
+
                     <div class="card-header pb-1">
                         <h5>Create game</h5>
                     </div>
+
                     <div class="card-body pb-3">
                         
                         <label for="create-nickname" class="form-text">Nickname: </label>
                         <input type="text" id="create-nickname" name="create-nickname" class="form-control">
 
                         <button class="btn btn-primary float-right col-12 mt-3" id="create-btn">Create</button>
-                        
                     </div>
-                </div>
-            </div>
+
+                </div> <!-- end of create game card -->
+            </div> <!-- end of create game wrapper -->
 
             <div class="col-1 lead text-center my-auto px-0 py-3">or</div>
 
@@ -74,32 +77,28 @@
                             </div>
                         </div>
                         <button class="btn btn-primary float-right col-12 mt-3" id="join-btn">Join</button>
-
-                        
                     </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Game ID -->
-        <div class="input-card">
-            <table>
-                <tr>
-                    <td><strong>Host:</strong></td>
-                    <td><strong>Guest:</strong></td>
-                </tr>
-                <tr>
-                    <td id="host-name">-</td>
-                    <td id="guest-name">-</td>
-                </tr>
-            </table>
-        </div>
+                </div> <!-- end of join game card -->
+            </div> <!-- end of join game wrapper -->
+        </div> <!-- end of actions div -->
 
         <!-- Game container -->
-        <div id="game-container" class="d-none">
+        <div id="game-container" class="container d-none mw-100">
 
-            <!-- Leave button on desktop -->
-            <button class="leave-btn btn btn-danger col-sm-1 d-none d-sm-block">Leave</button>
+            <div class="row d-inline text-center">
+
+                <!-- 'Leave' button on desktop and large displays -->
+                <button class="leave-btn btn btn-danger col-sm-1 d-none d-sm-inline m-0">Leave</button>
+
+                <!-- Gmae info -->
+                <div class="game-info">
+                    <span><strong>Host: </strong><span id="host-name">-</span><span class="d-none" id="you-host"> (you)</span></span>
+                    <br>
+                    <span><strong>Guest: </strong><span id="guest-name">-</span><span class="d-none" id="you-guest"> (you)</span></span>
+                </div>
+            </div>
+
 
             <div class="flex flex-center" id="choices-display">
                 <!-- Main game table -->
@@ -121,6 +120,7 @@
                 </table>
             </div>
 
+            <!-- The buttons for the choices (rock, paper, scissors) -->
             <div class="flex flex-center" id="game-buttons">
                 <button id="rock-btn" class="choice-btn" value="rock"><img src="./img/rock.png"></button>
                 <button id="paper-btn" class="choice-btn" value="paper"><img src="./img/paper.png"></button>
