@@ -3,7 +3,8 @@ let isHost = false;
 let gameState = null;
 // This flag is false while the host is alone in the lobby or
 // the guest hasn't joined any game. When it detects a change of
-// 
+// gameState (from null to something), this flag should activate
+// to show a notification of who joined.
 let opponentJoined = false;
 let ended = false;
 // A match ended and the player clicked 'play again'.
@@ -11,7 +12,7 @@ let ended = false;
 // 'play again' or to leave.
 let waitingToRestart = false;
 
-const ADDRESS = "192.168.1.71";
+const ADDRESS = "localhost";
 const PORT = "8080";
 
 const outcomes = {
@@ -55,8 +56,6 @@ let create_game_handler = (_) => {
             isHost = true;
             console.log("Game ID: " + gameID);
             updateUI();
-            $('.toast').toast('show');
-            //alert(`Game created succesfully with ID ${gameID}!`);
 
             setTimeout(function() {
                 get_game_state()
@@ -105,7 +104,14 @@ let join_game_handler = (_) => {
             gameID = resp.data.gameID;
             isHost = false;
             updateUI();
-            // alert(`Joined ${resp.data.nicknameHost}'s game!`);
+
+            swal({
+                title: `Joined ${gameState.nicknameHost}'s game!`,
+                icon: 'success',
+                text: ' ',
+                button: false,
+                timer: 1500
+              });
 
             setTimeout(function() {
                 get_game_state()
@@ -239,9 +245,9 @@ let update_player_status = (status) => {
             } else if (status == "exit") {
                 gameID = -1;
                 gameState = null;
+                location.reload();
             }
             updateUI();
-            location.reload();
 
         } else {
             console.log("An error ocurred: ");
@@ -249,8 +255,8 @@ let update_player_status = (status) => {
             return false;
         }
     }).catch(function(error) {
-        alert("Lost connection! :(");
         console.log(error);
+        alert("Lost connection! :(");
         gameID = -1;
         gameState = null;
         updateUI();
@@ -266,7 +272,6 @@ let updateUI = () => {
     if (gameID == -1) {
         document.querySelector("#your-choice").setAttribute("src", "./img/question.png");
         document.querySelector("#opponent-choice").setAttribute("src", "./img/question.png");
-        document.querySelector("#game-id").innerHTML = "-";
         document.querySelector("#nav-game-id").innerHTML = "&nbsp;-&nbsp;";
         document.querySelector("#host-name").innerHTML = "-";
         document.querySelector("#guest-name").innerHTML = "-";
@@ -294,6 +299,18 @@ let updateUI = () => {
         if (!ended) {
             document.querySelector("#opponent-choice").setAttribute("src", (guestChoice == "question") ? "./img/question.png" : "./img/ready.png");
         }
+
+        if (!opponentJoined && gameState.nicknameGuest != null) {
+            opponentJoined = true;
+            swal({
+                title: `${gameState.nicknameGuest} joined the game!`,
+                icon: 'success',
+                text: ' ',
+                button: false,
+                timer: 1500
+              });
+        }
+
     } else {
         
         // Hide buttons.
@@ -307,7 +324,6 @@ let updateUI = () => {
         }
     }
     
-    document.querySelector("#game-id").innerHTML = gameState.gameID;
     document.querySelector("#nav-game-id").innerHTML = gameState.gameID;
     document.querySelector("#host-name").innerHTML = gameState.nicknameHost;
     document.querySelector("#guest-name").innerHTML = gameState.nicknameGuest;
@@ -429,14 +445,6 @@ document.addEventListener("DOMContentLoaded", (_) => {
     
     document.querySelectorAll(".choice-btn").forEach(element => {
         element.addEventListener('click', (event) => { choice_buttons_handler(event) });
-    });
-
-    // This fixes a problem that makes (invisible) toasts be on top of everything.
-    $(".toast").on("show.bs.toast", function() {
-        $(this).removeClass("d-none");
-    });
-    $(".toast").on("hide.bs.toast", function() {
-        $(this).addClass("d-none");
     });
 
     document.getElementById("create-nickname").focus();
