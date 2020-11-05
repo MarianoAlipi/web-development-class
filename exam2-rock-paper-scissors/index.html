@@ -32,48 +32,70 @@
     <div class="container">
 
         <!-- Actions -->
-        <div class="flex">
+        <div class="row justify-content-center">
+
             <!-- Create game -->
-            <div class="input-card">
-                <h4>Create game</h4>
+            <div class="col-12 col-sm-4">
+                <div class="card">
+                    <div class="card-header pb-1">
+                        <h5>Create game</h5>
+                    </div>
+                    <div class="card-body pb-3">
+                        
+                        <label for="create-nickname" class="form-text">Nickname: </label>
+                        <input type="text" id="create-nickname" name="create-nickname" class="form-control">
 
-                <label for="create-nickname">Nickname:</label>
-                <input type="text" id="create-nickname" name="create-nickname">
-                <div class="flex-break" style="margin-top: 1em;"></div>
-                
-                <button id="create-btn">Create</button>
+                        <button class="btn btn-primary float-right col-12 mt-3" id="create-btn">Create</button>
+                        
+                    </div>
+                </div>
             </div>
+
+            <div class="col-1 lead text-center my-auto px-0 py-3">or</div>
+
             <!-- Join game -->
-            <div class="input-card">
-                <h4>Join game</h4>
-                
-                <label for="join-nickname">Nickname:</label>
-                <input type="text" id="join-nickname" name="join-nickname">
-                <div class="flex-break" style="margin-top: 1em;"></div>
+            <div class="col-12 col-sm-4">
+                <div class="card">
+                    <div class="card-header pb-1">
+                        <h5>Join game</h5>
+                    </div>
+                    <div class="card-body pb-3">
+                        
+                        <div class="row">
+                            <div class="col-8">
+                                <label for="join-nickname" class="form-text">Nickname: </label>
+                                <input type="text" id="join-nickname" name="join-nickname" class="form-control">
+                            </div>
 
-                <label for="join-id">Game ID:</label>
-                <input type="text" id="join-id" name="join-id">
-                <div class="flex-break" style="margin-top: 1em;"></div>
+                            <div class="col-4">
+                                <label for="join-id" class="form-text">Game ID: </label>
+                                <input type="number" id="join-id" name="join-id" class="form-control" placeholder="0000">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary float-right col-12 mt-3" id="join-btn">Join</button>
 
-                <button id="join-btn">Join</button>
+                        
+                    </div>
+                </div>
             </div>
-            <!-- Game ID -->
-            <div class="input-card">
-                <table>
-                    <tr style="height: 4em;">
-                        <td class="bold">Game ID:</td>
-                        <td id="game-id">-</td>
-                    </tr>
-                    <tr>
-                        <td class="bold">Host:</td>
-                        <td class="bold">Guest:</td>
-                    </tr>
-                    <tr>
-                        <td id="host-name">-</td>
-                        <td id="guest-name">-</td>
-                    </tr>
-                </table>
-            </div>
+        </div>
+
+        <!-- Game ID -->
+        <div class="input-card">
+            <table>
+                <tr style="height: 4em;">
+                    <td class="bold">Game ID:</td>
+                    <td id="game-id">-</td>
+                </tr>
+                <tr>
+                    <td class="bold">Host:</td>
+                    <td class="bold">Guest:</td>
+                </tr>
+                <tr>
+                    <td id="host-name">-</td>
+                    <td id="guest-name">-</td>
+                </tr>
+            </table>
         </div>
 
         <!-- Toasts area -->

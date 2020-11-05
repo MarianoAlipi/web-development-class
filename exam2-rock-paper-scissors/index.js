@@ -65,14 +65,8 @@ let create_game_handler = (_) => {
         return;
 
     }).catch(function(error) {
-        /*
-        if (error.response.status == 500) {
-            console.log(error);
-            alert(`The game could not be created.`);
-        } else {*/
-            console.log(error);
-            alert("An error ocurred.");
-        // }
+        console.log(error);
+        alert("An error ocurred.");
     });
 }
     
@@ -92,6 +86,9 @@ let join_game_handler = (_) => {
     
     if (gameIDToJoin === "") {
         alert("Please enter the ID of the game you want to join.");
+        return;
+    } else if (gameIDToJoin.length != 4) {
+        alert("Please enter a valid game ID.");
         return;
     }
     
