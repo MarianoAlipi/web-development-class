@@ -2,6 +2,10 @@ let gameID = -1;
 let isHost = false;
 let gameState = null;
 let ended = false;
+// A match ended and the player clicked 'play again'.
+// The player is now waiting for the opponent to choose
+// 'play again' or to leave.
+let waitingToRestart = false;
 
 const ADDRESS = "localhost";
 const PORT = "8080";
@@ -186,11 +190,26 @@ let get_game_state = () => {
             return false;
         }
     }).catch(function(error) {
-        alert("Lost connection! :(");
         console.log(error);
-        gameID = -1;
-        gameState = null;
-        updateUI();
+        swal({
+            title: "Lost connection! :(",
+            icon: "error",
+            buttons: {
+                "ok": {
+                    text: "OK",
+                    value: "ok",
+                    className: "btn btn-primary"
+                }
+            }
+        }).then((value) => {
+            switch(value) {
+                case "ok":
+                    location.reload();
+                    break;
+                default:
+                    break;
+            }
+        });
         return false;
     });
     
@@ -289,6 +308,38 @@ let updateUI = () => {
     document.querySelector("#host-name").innerHTML = gameState.nicknameHost;
     document.querySelector("#guest-name").innerHTML = gameState.nicknameGuest;
     
+    // If waiting to restart...
+    if (waitingToRestart) {
+        // The game restarted, so close the alert.
+        if (gameState.hostChoice == null && gameState.guestChoice == null) {
+            swal.close();
+            waitingToRestart = false;
+        } else {
+            if (!swal.getState().isOpen) {
+                swal({
+                    title: `Waiting for ${isHost ? gameState.nicknameGuest : gameState.nicknameHost}...`,
+                    icon: "./img/waiting.gif",
+                    buttons: {
+                        leave: {
+                            text: "Leave",
+                            value: "leave",
+                            className: "btn btn-danger"
+                        }
+                    }
+                }).then((value) => {
+                    switch(value) {
+                        case "leave":
+                            update_player_status("exit");
+                            location.reload();
+                            break;
+                        default:
+                            break;
+                    }
+                });
+            }
+        }
+    }
+
     // If both players chose already, show the result.
     if (hostChoice != "question" && guestChoice != "question") {
         
@@ -317,16 +368,22 @@ let updateUI = () => {
             icon: playerResult == "It's a tie!" ? "./img/equal.png" : (playerResult == "You win!" ? "./img/crown.png" : "./img/letter-l.png"),
             content: "<img src='./img/ready.png'>",
             buttons: {
+                leave: {
+                    text: "Leave",
+                    value: null,
+                    className: "btn btn-danger"
+                },
                 playAgain: {
                     text: "Play again",
-                    value: "playAgain"
-                },
-               cancel: "Leave" // has null as value
+                    value: "playAgain",
+                    className: "btn btn-primary"
+                }
             }
         }).then((value) => {
             switch(value) {
                 case "playAgain":
                     update_player_status("ready");
+                    waitingToRestart = true;
                     break;
                 case null:
                     update_player_status("exit");
