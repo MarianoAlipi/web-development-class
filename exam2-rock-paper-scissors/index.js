@@ -222,6 +222,8 @@ let get_game_state = () => {
     
 };
 
+// Send the server an update regarding the current player.
+// Possible values: "ready" and "exit"
 let update_player_status = (status) => {
 
     if (gameID == -1) {
