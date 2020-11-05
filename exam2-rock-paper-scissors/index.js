@@ -6,6 +6,7 @@ let gameState = null;
 // gameState (from null to something), this flag should activate
 // to show a notification of who joined.
 let opponentJoined = false;
+let guestName = "";
 let ended = false;
 // A match ended and the player clicked 'play again'.
 // The player is now waiting for the opponent to choose
@@ -305,8 +306,10 @@ let updateUI = () => {
             document.querySelector("#opponent-choice").setAttribute("src", (guestChoice == "question") ? "./img/question.png" : "./img/ready.png");
         }
 
+        // A guest joined the game.
         if (!opponentJoined && gameState.nicknameGuest != null) {
             opponentJoined = true;
+            guestName = gameState.nicknameGuest;
             swal({
                 title: `${gameState.nicknameGuest} joined the game!`,
                 icon: 'success',
@@ -314,6 +317,17 @@ let updateUI = () => {
                 button: false,
                 timer: 1500
               });
+        // The guest left the game.
+        } else if (opponentJoined && gameState.nicknameGuest == null) {
+            opponentJoined = false;
+            swal({
+                title: `${guestName} left the game!`,
+                icon: 'error',
+                text: ' ',
+                button: false,
+                timer: 1500
+              });
+              guestName = "";
         }
 
     } else {
