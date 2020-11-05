@@ -1,6 +1,10 @@
 let gameID = -1;
 let isHost = false;
 let gameState = null;
+// This flag is false while the host is alone in the lobby or
+// the guest hasn't joined any game. When it detects a change of
+// 
+let opponentJoined = false;
 let ended = false;
 // A match ended and the player clicked 'play again'.
 // The player is now waiting for the opponent to choose
