@@ -89,10 +89,16 @@ let join_game_handler = (_) => {
         nicknameField.setAttribute("placeholder", "Enter a nickname");
     }
     
-    if (gameIDToJoin.length == 0) {
+    if (gameIDToJoin.length != 4) {
         gameIDField.classList.add("is-invalid");
-    } else if (gameIDToJoin.length != 4) {
-        gameIDField.classList.add("is-invalid");
+        
+        if (nickname.length == 0) {
+            nicknameField.focus();
+            nicknameField.select();
+        } else {
+            gameIDField.focus();
+            gameIDField.select();
+        }
     }
 
     if (nickname.length == 0 || gameIDToJoin.length == 0) {
