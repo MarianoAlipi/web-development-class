@@ -131,6 +131,10 @@ nav #nav-game-id {
         font-size: 1.1em;
     }
 
+    #main {
+        margin-bottom: 0px;
+    }
+
     .footer {
         height: 115px;
         text-align: center;
@@ -155,6 +159,10 @@ nav #nav-game-id {
     
     .navbar-brand {
         font-size: 1.5em;
+    }
+
+    #main {
+        margin-bottom: 35px;
     }
 
     .footer {
