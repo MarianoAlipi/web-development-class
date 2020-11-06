@@ -48,11 +48,12 @@ db.once('open', function() {
 
         // Limit to 20 characters.
         const nickname = req.params["nickname"].substring(0, 20);
+        console.log(`Received create game request for host ${nickname}.`);
         
         // Generate a valid and unique game ID.
         let gameID = "";
         let queryRes = null;
-        
+
         do {
             gameID = Math.floor(Math.random() * 9999).toString().padStart(4, "0");
             queryRes = await Game.findOne({gameID}).exec();
