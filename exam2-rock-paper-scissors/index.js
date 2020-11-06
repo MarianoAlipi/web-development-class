@@ -13,7 +13,7 @@ let ended = false;
 // 'play again' or to leave.
 let waitingToRestart = false;
 
-const ADDRESS = "192.168.1.71";
+const ADDRESS = "localhost";
 const PORT = "8080";
 
 const outcomes = {
@@ -58,6 +58,10 @@ let create_game_handler = (_) => {
             isHost = true;
             console.log("Game ID: " + gameID);
             updateUI();
+
+            $('#lonely').fadeIn();
+            document.querySelector("#lonely").classList.add("d-flex");
+            document.querySelector("#lonely").classList.remove("d-none");
 
             setTimeout(function() {
                 get_game_state()
@@ -351,6 +355,10 @@ let updateUI = () => {
             });
 
             setTimeout(function() {
+                $('#lonely').fadeOut();
+                document.querySelector("#lonely").classList.add("d-none");
+                document.querySelector("#lonely").classList.remove("d-flex");
+
                 $('#choices-display').fadeIn();
                 $('#game-buttons').fadeIn();
                 document.querySelector("#choices-display").classList.remove("d-none");
@@ -381,6 +389,10 @@ let updateUI = () => {
                 document.querySelector("#choices-display").classList.remove("d-flex");
                 document.querySelector("#game-buttons").classList.add("d-none");
                 document.querySelector("#game-buttons").classList.remove("d-flex");
+
+                $('#lonely').fadeIn();
+                document.querySelector("#lonely").classList.add("d-flex");
+                document.querySelector("#lonely").classList.remove("d-none");
             }, 1500);
         }
 
