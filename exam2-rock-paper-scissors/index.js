@@ -75,7 +75,13 @@ let create_game_handler = (_) => {
 
     }).catch(function(error) {
         console.log(error);
-        alert("An error ocurred.");
+        swal({
+            title: "An error ocurred.",
+            icon: "error",
+            text: "Check the browser console for more information. 🤓",
+            buttons: false,
+            timer: 2500
+        });
     });
 }
     
