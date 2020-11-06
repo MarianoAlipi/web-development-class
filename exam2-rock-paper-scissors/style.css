@@ -63,16 +63,6 @@ nav #nav-game-id {
     padding: 2px;
 }
 
-.flex {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.flex-center {
-    align-items: center;
-    justify-content: center;
-}
-
 #choices-display {
     text-align: center;
     margin: 1em 0;

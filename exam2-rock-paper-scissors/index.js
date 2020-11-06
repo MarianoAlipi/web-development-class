@@ -13,7 +13,7 @@ let ended = false;
 // 'play again' or to leave.
 let waitingToRestart = false;
 
-const ADDRESS = "localhost";
+const ADDRESS = "192.168.1.71";
 const PORT = "8080";
 
 const outcomes = {
@@ -332,26 +332,46 @@ let updateUI = () => {
 
         // A guest joined the game.
         if (!opponentJoined && gameState.nicknameGuest != null) {
+
             opponentJoined = true;
             guestName = gameState.nicknameGuest;
+
             swal({
                 title: `${gameState.nicknameGuest} joined the game!`,
                 icon: 'success',
                 text: ' ',
                 button: false,
                 timer: 1500
-              });
+            });
+
+            setTimeout(function() {
+                $('#choices-display').fadeIn();
+                $('#game-buttons').fadeIn();
+                document.querySelector("#choices-display").classList.remove("d-none");
+                document.querySelector("#game-buttons").classList.remove("d-none");
+            }, 1500);
+
         // The guest left the game.
         } else if (opponentJoined && gameState.nicknameGuest == null) {
+
             opponentJoined = false;
+
             swal({
                 title: `${guestName} left the game!`,
                 icon: 'error',
                 text: ' ',
                 button: false,
                 timer: 1500
-              });
-              guestName = "";
+            });
+
+            guestName = "";
+
+            setTimeout(function() {
+                $('#choices-display').fadeOut();
+                $('#game-buttons').fadeOut();
+                document.querySelector("#choices-display").classList.add("d-none");
+                document.querySelector("#game-buttons").classList.add("d-none");
+            }, 1500);
         }
 
     } else {

@@ -84,25 +84,26 @@
         </div> <!-- end of actions div -->
 
         <!-- Game container -->
-        <div id="game-container" class="container d-none mw-100">
+        <div id="game-container" class="container d-none flex-column mw-100 p-sm-0">
 
-            <div class="row d-inline text-center">
+            <!-- Row with the 'leave' button and the game info -->
+            <div class="row d-flex justify-content-between mx-2 text-center">
 
                 <!-- 'Leave' button on desktop and large displays -->
-                <button class="leave-btn btn btn-danger col-sm-1 d-none d-sm-inline m-0">Leave</button>
+                <button class="leave-btn btn btn-danger col-sm-2 col-lg-1 d-none d-sm-block">Leave</button>
 
-                <!-- Gmae info -->
-                <div class="game-info">
+                <!-- Game info -->
+                <div class="game-info col-12 col-sm-4">
                     <span><strong>Host: </strong><span id="host-name">-</span><span class="d-none" id="you-host"> (you)</span></span>
                     <br>
                     <span><strong>Guest: </strong><span id="guest-name">-</span><span class="d-none" id="you-guest"> (you)</span></span>
                 </div>
+
             </div>
 
-
-            <div class="flex flex-center" id="choices-display">
-                <!-- Main game table -->
-                <table>
+            <!-- Choices display table -->
+            <div class="d-flex flex-column" id="choices-display">
+                <table class="align-self-center">
                     <thead>
                         <tr>
                             <th>Your choice</th>
@@ -121,7 +122,7 @@
             </div>
 
             <!-- The buttons for the choices (rock, paper, scissors) -->
-            <div class="flex flex-center" id="game-buttons">
+            <div class="d-flex flex-wrap justify-content-center" id="game-buttons">
                 <button id="rock-btn" class="choice-btn" value="rock"><img src="./img/rock.png"></button>
                 <button id="paper-btn" class="choice-btn" value="paper"><img src="./img/paper.png"></button>
                 <button id="scissors-btn" class="choice-btn" value="scissors"><img src="./img/scissors.png"></button>
