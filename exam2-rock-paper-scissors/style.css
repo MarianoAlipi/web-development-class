@@ -109,11 +109,6 @@ nav #nav-game-id {
     pointer-events: none; /* This prevents the img from being the target of a click. */
 }
 
-.flex-break {
-    flex-basis: 100%;
-    height: 0;
-}
-
 /*
     xs: 0 - 767 px
     sm: 768 - 991 px
@@ -132,7 +127,7 @@ nav #nav-game-id {
     }
 
     #main {
-        margin-bottom: 0px;
+        min-height: calc(100vh - 115px);
     }
 
     .footer {
@@ -162,11 +157,11 @@ nav #nav-game-id {
     }
 
     #main {
-        margin-bottom: 35px;
+        min-height: calc(100vh - 35px);
     }
 
     .footer {
-        height: 35px;;
+        height: 35px;
     }
 
     .footer #icons-ref {

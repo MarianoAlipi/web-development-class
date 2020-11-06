@@ -13,7 +13,7 @@ let ended = false;
 // 'play again' or to leave.
 let waitingToRestart = false;
 
-const ADDRESS = "192.168.1.71";
+const ADDRESS = "localhost";
 const PORT = "8080";
 
 const outcomes = {
