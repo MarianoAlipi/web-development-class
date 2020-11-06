@@ -116,16 +116,22 @@ let join_game_handler = (_) => {
             updateUI();
 
             swal({
-                title: `Joined ${gameState.nicknameHost}'s game!`,
+                title: `Joined ${gameState.nicknameHost}'s game! 😁`,
                 icon: 'success',
                 text: ' ',
                 button: false,
                 timer: 1500
               });
 
-            setTimeout(function() {
+              setTimeout(function() {
+                $('#choices-display').fadeIn();
+                $('#game-buttons').fadeIn();
+                document.querySelector("#choices-display").classList.remove("d-none");
+                document.querySelector("#choices-display").classList.add("d-flex");
+                document.querySelector("#game-buttons").classList.remove("d-none");
+                document.querySelector("#game-buttons").classList.add("d-flex");
                 get_game_state()
-            }, 1000);
+            }, 1500);
 
         } else {
             console.log("An error ocurred.");
@@ -153,7 +159,7 @@ let join_game_handler = (_) => {
             swal({
                 title: "An error ocurred.",
                 icon: "error",
-                text: "Check the browser console for more information.",
+                text: "Check the browser console for more information. 🤓",
                 buttons: false,
                 timer: 2500
             });
@@ -224,7 +230,7 @@ let get_game_state = () => {
     }).catch(function(error) {
         console.log(error);
         swal({
-            title: "Lost connection! :(",
+            title: "Lost connection! 😢",
             icon: "error",
             buttons: {
                 "ok": {
@@ -337,7 +343,7 @@ let updateUI = () => {
             guestName = gameState.nicknameGuest;
 
             swal({
-                title: `${gameState.nicknameGuest} joined the game!`,
+                title: `${gameState.nicknameGuest} joined the game! 🥳`,
                 icon: 'success',
                 text: ' ',
                 button: false,
@@ -348,7 +354,9 @@ let updateUI = () => {
                 $('#choices-display').fadeIn();
                 $('#game-buttons').fadeIn();
                 document.querySelector("#choices-display").classList.remove("d-none");
+                document.querySelector("#choices-display").classList.add("d-flex");
                 document.querySelector("#game-buttons").classList.remove("d-none");
+                document.querySelector("#game-buttons").classList.add("d-flex");
             }, 1500);
 
         // The guest left the game.
@@ -357,7 +365,7 @@ let updateUI = () => {
             opponentJoined = false;
 
             swal({
-                title: `${guestName} left the game!`,
+                title: `${guestName} left the game! 👋`,
                 icon: 'error',
                 text: ' ',
                 button: false,
@@ -370,7 +378,9 @@ let updateUI = () => {
                 $('#choices-display').fadeOut();
                 $('#game-buttons').fadeOut();
                 document.querySelector("#choices-display").classList.add("d-none");
+                document.querySelector("#choices-display").classList.remove("d-flex");
                 document.querySelector("#game-buttons").classList.add("d-none");
+                document.querySelector("#game-buttons").classList.remove("d-flex");
             }, 1500);
         }
 
