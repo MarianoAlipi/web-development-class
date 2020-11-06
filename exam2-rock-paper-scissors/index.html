@@ -31,10 +31,10 @@
     </nav>
     
     <!-- Main content wrapper -->
-    <div class="container p-0 mw-100">
+    <div class="container d-flex flex-column p-0 mw-100">
 
         <!-- Actions -->
-        <div id="forms-area" class="row justify-content-center mb-3 mx-0">
+        <div id="forms-area" class="row mb-3 mx-0 justify-content-center">
 
             <!-- Create game -->
             <div class="col-12 col-sm-5 col-md-5 col-lg-4 col-xl-3">
@@ -94,15 +94,15 @@
 
                 <!-- Game info -->
                 <div class="game-info col-12 col-sm-4">
-                    <span><strong>Host: </strong><span id="host-name">-</span><span class="d-none" id="you-host"> (you)</span></span>
+                    <span><strong>Host: </strong><span id="host-name">&nbsp;-&nbsp;</span><span class="d-none" id="you-host"> (you)</span></span>
                     <br>
-                    <span><strong>Guest: </strong><span id="guest-name">-</span><span class="d-none" id="you-guest"> (you)</span></span>
+                    <span><strong>Guest: </strong><span id="guest-name">&nbsp;-&nbsp;</span><span class="d-none" id="you-guest"> (you)</span></span>
                 </div>
 
             </div>
 
             <!-- Choices display table -->
-            <div class="d-none flex-column" id="choices-display">
+            <div class="d-none flex-column mt-n1" id="choices-display">
                 <table class="align-self-center">
                     <thead>
                         <tr>
@@ -122,10 +122,12 @@
             </div>
 
             <!-- The buttons for the choices (rock, paper, scissors) -->
-            <div class="d-none flex-wrap justify-content-center" id="game-buttons">
+            <div class="d-none flex-wrap flex-row justify-content-center mb-3" id="game-buttons">
+
                 <button id="rock-btn" class="choice-btn" value="rock"><img src="./img/rock.png"></button>
                 <button id="paper-btn" class="choice-btn" value="paper"><img src="./img/paper.png"></button>
                 <button id="scissors-btn" class="choice-btn" value="scissors"><img src="./img/scissors.png"></button>
+
             </div>
 
             <!-- Lonely (for when a guest hasn't joined) -->

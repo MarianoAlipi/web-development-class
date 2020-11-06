@@ -13,7 +13,7 @@ let ended = false;
 // 'play again' or to leave.
 let waitingToRestart = false;
 
-const ADDRESS = "localhost";
+const ADDRESS = "192.168.1.71";
 const PORT = "8080";
 
 const outcomes = {
@@ -179,13 +179,12 @@ let join_game_handler = (_) => {
 
 // When the player clicks one of the options.
 let choice_buttons_handler = (e) => {
-    
+
     if (gameID == -1) {
-        console.log("You are not currently in a game.");
         updateUI();
         return;
     }
-    
+
     const choice = e.target.value;
     const request = `http://${ADDRESS}:${PORT}/choice/${gameID},${isHost},${choice}`;
     
@@ -316,8 +315,8 @@ let updateUI = () => {
         document.querySelector("#your-choice").setAttribute("src", "./img/question.png");
         document.querySelector("#opponent-choice").setAttribute("src", "./img/question.png");
         document.querySelector("#nav-game-id").innerHTML = "&nbsp;-&nbsp;";
-        document.querySelector("#host-name").innerHTML = "-";
-        document.querySelector("#guest-name").innerHTML = "-";
+        document.querySelector("#host-name").innerHTML = "&nbsp;-&nbsp;";
+        document.querySelector("#guest-name").innerHTML = "&nbsp;-&nbsp;";
         document.querySelector("#game-container").classList.add("d-none");
         document.querySelector("#forms-area").classList.remove("d-none");
         return;
