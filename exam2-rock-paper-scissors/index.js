@@ -390,9 +390,10 @@ let updateUI = () => {
         }
     }
     
+    // The game info.
     document.querySelector("#nav-game-id").innerHTML = gameState.gameID;
     document.querySelector("#host-name").innerHTML = gameState.nicknameHost;
-    document.querySelector("#guest-name").innerHTML = gameState.nicknameGuest;
+    document.querySelector("#guest-name").innerHTML = gameState.nicknameGuest == null ? "&nbsp;-&nbsp;" : gameState.nicknameGuest;
     
     // If waiting to restart...
     if (waitingToRestart) {
